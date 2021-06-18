@@ -1,12 +1,16 @@
 package kg.neobis.diabetes.services.impl;
 
 import kg.neobis.diabetes.entity.User;
-import kg.neobis.diabetes.exception.RecordNotFoundException;
+import kg.neobis.diabetes.entity.UserWidgets;
+import kg.neobis.diabetes.entity.enums.Widgets;
 import kg.neobis.diabetes.exception.WrongDataException;
-import kg.neobis.diabetes.models.*;
+import kg.neobis.diabetes.models.ModelToChangePassword;
+import kg.neobis.diabetes.models.UsersWidgetsModel;
+import kg.neobis.diabetes.models.WidgetModel;
 import kg.neobis.diabetes.models.security.MyUserDetails;
 import kg.neobis.diabetes.repositories.UserRepository;
 import kg.neobis.diabetes.services.RegistrationService;
+import kg.neobis.diabetes.services.WidgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,13 +19,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class MyUserServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
+    private final WidgetService widgetService;
+
     @Autowired
-    public MyUserServiceImpl(UserRepository userRepository) {
+    public MyUserServiceImpl(UserRepository userRepository, WidgetService widgetService) {
         this.userRepository = userRepository;
+        this.widgetService = widgetService;
     }
 
     @Override
@@ -82,11 +93,23 @@ public class MyUserServiceImpl implements UserDetailsService {
         user.setPassword(model.getNewPassword());
         userRepository.save(user);
     }
-    public void setNewPassword(String password) throws WrongDataException {
+    public void setNewPassword(String password){
         User user = getCurrentUser();
 
         user.setPassword(password);
         userRepository.save(user);
+    }
+
+    public List<WidgetModel> setWidgets(UsersWidgetsModel model) {
+        UserWidgets userWidgets = widgetService.setWidgetsForCurrentUser(model, getCurrentUser());
+        Set<Widgets> widgets = userWidgets.getWidgets();
+
+        List<WidgetModel> list = new ArrayList<>();
+        for(Widgets widget :  widgets)
+            list.add(new WidgetModel(widget.getId(), widget.getName()));
+
+        return list;
+
     }
 
 //    public List<UserModel> getAllUsers() {

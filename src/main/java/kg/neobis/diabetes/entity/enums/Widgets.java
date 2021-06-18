@@ -24,4 +24,12 @@ public enum Widgets {
         this.name = name;
     }
 
+    public static Widgets get(long id){
+        for(Widgets widget : Widgets.values())
+            if(widget.getId() == id)
+                return widget;
+
+            return  null;
+    }
+
 }

@@ -1,7 +1,5 @@
 package kg.neobis.diabetes.models;
 
-import kg.neobis.diabetes.entity.enums.DiabetesStatus;
-import kg.neobis.diabetes.entity.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

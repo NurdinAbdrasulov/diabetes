@@ -31,9 +31,9 @@ public class RegistrationController {
     public ResponseEntity<String> step1 (@RequestBody RegistrationModel registrationModel){
         try {
             registrationService.doStep1(registrationModel);
-            return ResponseEntity.ok("successful'");
+            return ResponseEntity.ok("successful");
         } catch ( WrongDataException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -60,7 +60,6 @@ public class RegistrationController {
         for (Gender gender :Gender.values())
             list.add(new GenderModel(gender.ordinal(), gender.toString()));
         return ResponseEntity.ok(list);
-
     }
 
     @GetMapping("/getDiabetesStatuses")

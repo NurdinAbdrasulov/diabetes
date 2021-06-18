@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -84,23 +85,30 @@ public class RegistrationService {
         else if(!registrationModel.getPassword().equals(registrationModel.getConfirmPassword()))
             throw new WrongDataException("confirm password is wrong");
 
-        Random random = new Random();
-        String confirmCode = Integer.toString (random.nextInt(9000) + 1000); //1000 - 9999
+
+        String confirmCode = getRandomFourDigitNumber();
         emailSenderService.sendEmailToConfirmEmail(registrationModel.getEmail(), confirmCode);
 
         ConfirmEmail confirmEmail = new ConfirmEmail();
         confirmEmail.setEmail(registrationModel.getEmail());
         confirmEmail.setPassword(registrationModel.getPassword());
         confirmEmail.setCode(confirmCode);
+        confirmEmail.setCreatedDate(new java.util.Date());
         repository.save(confirmEmail);
 
 
     }
 
+    public String getRandomFourDigitNumber(){// на сколько это правильно? При вызове метода каждый раз создается новый объект
+        Random random = new Random();
+        return Integer.toString (random.nextInt(9000) + 1000); //1000 - 9999
+    }
+
     public ResponseEntity doStep2(ModelToConfirmEmail model) throws Exception {
         ConfirmEmail confirmEmail = repository.findByEmail(model.getEmail());
         if(confirmEmail == null)
-            throw  new RecordNotFoundException("нет указанной почты");
+            throw  new RecordNotFoundException("на почту " + model.getEmail() + " код не был отправлен");
+
         else if(!confirmEmail.getCode().equals(model.getConfirmCode()))
             throw new WrongDataException("не правильный код");
 
@@ -110,20 +118,7 @@ public class RegistrationService {
         userRepository.save(user);
 
 
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
-            );
-        } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username and password", e);
-        }
-
-        final UserDetails userDetails = userService
-                .loadUserByUsername(user.getEmail());
-
-        final String jwt = jwtTokenUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        return ResponseEntity.ok(authenticate(user));
 
     }
 
@@ -137,5 +132,23 @@ public class RegistrationService {
         user.setWeight(model.getWeight());
         user.setHeight(model.getHeight());
         userRepository.save(user);
+    }
+
+
+    public AuthenticationResponse authenticate( User user) throws Exception {
+        try{
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+            );
+        } catch (BadCredentialsException e) {
+            throw new Exception("Incorrect username and password", e);
+        }
+
+        final UserDetails userDetails = userService
+                .loadUserByUsername(user.getEmail());
+
+        final String jwt = jwtTokenUtil.generateToken(userDetails);
+
+        return new AuthenticationResponse(jwt);
     }
 }

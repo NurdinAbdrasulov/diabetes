@@ -82,6 +82,12 @@ public class MyUserServiceImpl implements UserDetailsService {
         user.setPassword(model.getNewPassword());
         userRepository.save(user);
     }
+    public void setNewPassword(String password) throws WrongDataException {
+        User user = getCurrentUser();
+
+        user.setPassword(password);
+        userRepository.save(user);
+    }
 
 //    public List<UserModel> getAllUsers() {
 //        List<UserModel> resultList = new ArrayList<>();

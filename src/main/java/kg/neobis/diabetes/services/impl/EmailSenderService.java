@@ -26,4 +26,13 @@ public class EmailSenderService {
         simpleMailMessage.setText("Здравствуйте," + "!\nДля подтверждение почты пожалуйста введите следующий код: " + codeToConfirm);
         javaMailSender.send(simpleMailMessage);
     }
+
+    public void sendEmailToRestorePassword(String email, String codeToConfirm) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(email);
+        simpleMailMessage.setFrom(username);
+        simpleMailMessage.setSubject("Восстановление пароля! TEAM#1");
+        simpleMailMessage.setText("Здравствуйте," + "!\nДля восстановление пароля пожалуйста введите следующий код: " + codeToConfirm);
+        javaMailSender.send(simpleMailMessage);
+    }
 }

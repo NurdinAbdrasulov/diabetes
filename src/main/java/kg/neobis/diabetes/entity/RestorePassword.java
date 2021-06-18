@@ -11,25 +11,22 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "confirm_email")
-public class ConfirmEmail {
+@NoArgsConstructor
+public class RestorePassword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(name = "code", nullable = false, length = 4)
+    private String code;
 
     @Column(name = "created_date", nullable = false)
     private Date createdDate;
 
-    @Column(name = "code", length = 4, nullable = false)
-    private String code;
 }

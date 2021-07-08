@@ -5,13 +5,17 @@ import kg.neobis.diabetes.entity.UserWidgets;
 import kg.neobis.diabetes.entity.enums.Widgets;
 import kg.neobis.diabetes.exception.WrongDataException;
 import kg.neobis.diabetes.models.ModelToChangePassword;
+import kg.neobis.diabetes.models.UserModel;
 import kg.neobis.diabetes.models.UsersWidgetsModel;
 import kg.neobis.diabetes.models.WidgetModel;
 import kg.neobis.diabetes.models.security.MyUserDetails;
+import kg.neobis.diabetes.repositories.UserPaginationRepository;
 import kg.neobis.diabetes.repositories.UserRepository;
 import kg.neobis.diabetes.services.RegistrationService;
 import kg.neobis.diabetes.services.WidgetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,13 +30,15 @@ import java.util.Set;
 @Service
 public class MyUserServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
+    private final UserPaginationRepository paginationRepository;
 
     private final WidgetService widgetService;
 
     @Autowired
-    public MyUserServiceImpl(UserRepository userRepository, WidgetService widgetService) {
+    public MyUserServiceImpl(UserRepository userRepository, WidgetService widgetService, UserPaginationRepository paginationRepository) {
         this.userRepository = userRepository;
         this.widgetService = widgetService;
+        this.paginationRepository = paginationRepository;
     }
 
     @Override
@@ -112,24 +118,51 @@ public class MyUserServiceImpl implements UserDetailsService {
 
     }
 
-//    public List<UserModel> getAllUsers() {
-//        List<UserModel> resultList = new ArrayList<>();
-//
-//        List<User> usersList = userRepository.findAll();
-//        for(User user : usersList){
-//            UserModel model = new UserModel();
-//            model.setId(user.getPerson().getId());
-//            model.setEmail(user.getEmail());
-//            model.setUserStatus(user.getUserStatus());
-//            model.setRole(user.getRole());
-//            model.setSurname(user.getPerson().getSurname());
-//            model.setName(user.getPerson().getName());
-//            model.setPhoneNumber(user.getPerson().getPhoneNumber());
-//            model.setGroups(getGroupModels(user.getPerson().getGroupOfPeople()));
-//            resultList.add(model);
-//        }
-//        return resultList;
+//    public ResponseEntity<List<UserModel>> getAll() {
 //    }
+
+    public Page<UserModel> getAllUsers(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+        List<User> usersList = userRepository.findAll();
+        Page<User> userPage = paginationRepository.findAll(pageable);
+        List<UserModel> resultList = new ArrayList<>();
+
+        for(User user : usersList){
+            UserModel model = new UserModel();
+            model.setId(user.getId());
+            model.setEmail(user.getEmail());
+            model.setName(user.getName());
+            model.setBirthDate(user.getBirthDate());
+            model.setGender(user.getGender());
+            model.setWeight(user.getWeight());
+            model.setHeight(user.getHeight());
+            model.setDiabetesStatus(user.getDiabetesStatus());
+            resultList.add(model);
+        }
+        return new PageImpl<>(resultList, PageRequest.of(pageNo, pageSize, Sort.by(sortBy)), usersList.size());
+
+    }
+
+    public List<UserModel> getAllUsers() {
+        List<User> usersList = userRepository.findAll();
+        List<UserModel> resultList = new ArrayList<>();
+
+        for(User user : usersList){
+            UserModel model = new UserModel();
+            model.setId(user.getId());
+            model.setEmail(user.getEmail());
+            model.setName(user.getName());
+            model.setBirthDate(user.getBirthDate());
+            model.setGender(user.getGender());
+            model.setWeight(user.getWeight());
+            model.setHeight(user.getHeight());
+            model.setDiabetesStatus(user.getDiabetesStatus());
+            resultList.add(model);
+        }
+        return resultList;
+
+    }
 
 //    public void updateUser(ModelToUpdateUser model) throws RecordNotFoundException {
 //        User user = userRepository.findByEmail(model.getEmail());

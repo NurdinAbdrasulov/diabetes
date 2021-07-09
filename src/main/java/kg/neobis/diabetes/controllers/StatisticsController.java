@@ -1,11 +1,14 @@
 package kg.neobis.diabetes.controllers;
 
+import kg.neobis.diabetes.models.AgeStatisticsModel;
 import kg.neobis.diabetes.services.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("statistics")
@@ -29,7 +32,7 @@ public class StatisticsController {
     }
 
     @GetMapping("age")
-    public ResponseEntity age(){
-        return null;
+    public ResponseEntity<List<AgeStatisticsModel>> age(){
+        return ResponseEntity.ok(service.getAge());
     }
 }

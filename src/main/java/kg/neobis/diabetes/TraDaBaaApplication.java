@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FmsApplication {
+public class TraDaBaaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FmsApplication.class, args);
+		SpringApplication.run(TraDaBaaApplication.class, args);
 	}
 
 }

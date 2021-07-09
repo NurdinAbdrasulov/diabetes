@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgeStatisticsModel {
-    Integer female;
-    Integer male;
+    String ageDiapason;
+    Integer percent;
 }
 

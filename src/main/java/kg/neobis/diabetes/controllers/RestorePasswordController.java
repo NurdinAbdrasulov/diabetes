@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("restorePassword")
+@CrossOrigin
 public class RestorePasswordController {
 
     private RestorePasswordService service;

@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("food")
+@CrossOrigin
 public class FoodController {
 
     private final FoodService service;

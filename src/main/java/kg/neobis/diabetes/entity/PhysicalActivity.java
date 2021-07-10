@@ -23,5 +23,6 @@ public class PhysicalActivity {
     private String name;
 
     @Column(name = "icon")
+    @Lob
     private String icon;
 }

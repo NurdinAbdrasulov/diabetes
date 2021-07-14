@@ -101,7 +101,7 @@ public class RegistrationService {
 
     public String getRandomFourDigitNumber(){// на сколько это правильно? При вызове метода каждый раз создается новый объект
         Random random = new Random();
-        return Integer.toString (random.nextInt(9000) + 1000); //1000 - 9999
+        return Integer.toString (random.nextInt(900000) + 100000); //100000 - 999999
     }
 
     public ResponseEntity doStep2(ModelToConfirmEmail model) throws Exception {

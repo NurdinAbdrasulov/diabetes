@@ -30,6 +30,6 @@ public class ConfirmEmail {
     @Column(name = "created_date", nullable = false)
     private Date createdDate;
 
-    @Column(name = "code", length = 4, nullable = false)
+    @Column(name = "code", length = 6, nullable = false)
     private String code;
 }

@@ -10,7 +10,7 @@ public enum Widgets {
     MOOD(3, "Настроение"),
     CIGARETTE(4, "Сигареты"),
     ALCOHOL(5, "Алкоголь"),
-    MEDICATION(6, "Медикаменты"),
+    MEDICATION(6, "Лекарства"),
     SUGAR(7, "Сахар"),
     PHYSICAL_ACTIVITY(8, "Физическая актиность"),
     INSULIN(9, "Инсулин");

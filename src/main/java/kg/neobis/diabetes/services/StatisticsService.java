@@ -88,6 +88,8 @@ public class StatisticsService {
         LocalDate currentDate = LocalDate.now();
 
         for(UserModel userModel: allUsers) {
+            if(userModel.getBirthDate() == null)
+                continue;// если у юзера не указана дата рождения
             java.sql.Date userBirth = userModel.getBirthDate();
             int age = Period.between(userBirth.toLocalDate(), currentDate).getYears();
 

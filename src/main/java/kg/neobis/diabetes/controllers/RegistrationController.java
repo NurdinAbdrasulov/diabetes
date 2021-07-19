@@ -28,30 +28,33 @@ public class RegistrationController {
     }
 
     @PostMapping("/step1")//email and password
-    public ResponseEntity<String> step1 (@RequestBody RegistrationModel registrationModel){
+    public ResponseEntity<MessageModel> step1 (@RequestBody RegistrationModel registrationModel){
+        MessageModel model = new MessageModel();
         try {
             registrationService.doStep1(registrationModel);
-            return ResponseEntity.ok("successful");
+            model.setMessage("successful");
+            return ResponseEntity.ok(model);
         } catch ( WrongDataException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            model.setMessage(e.getMessage());
+            return new ResponseEntity<>(model, e.getStatus());
         }
     }
 
     @PostMapping("/step2")//confirm code
-    public ResponseEntity<String> step2 (@RequestBody ModelToConfirmEmail model){
+    public ResponseEntity<?> step2 (@RequestBody ModelToConfirmEmail model){
         try {
              return  registrationService.doStep2(model);
         } catch (RecordNotFoundException | WrongDataException e) {
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new MessageModel(e.getMessage()),e.getStatus());
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new MessageModel(e.getMessage()),HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/step3")//questioning
-    public ResponseEntity<String> step3(@RequestBody QuestioningModel model){
+    public ResponseEntity<MessageModel> step3(@RequestBody QuestioningModel model){
         registrationService.doStep3(model);
-        return ResponseEntity.ok("successfully added");
+        return ResponseEntity.ok(new MessageModel("successfully added"));
     }
 
     @GetMapping("/getGenders")

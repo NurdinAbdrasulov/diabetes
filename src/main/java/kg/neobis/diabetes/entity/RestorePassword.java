@@ -23,7 +23,7 @@ public class RestorePassword {
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-    @Column(name = "code", nullable = false, length = 4)
+    @Column(name = "code", nullable = false, length = 6)
     private String code;
 
     @Column(name = "created_date", nullable = false)

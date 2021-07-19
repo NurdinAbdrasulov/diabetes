@@ -1,7 +1,9 @@
 package kg.neobis.diabetes.exception;
 
-public class AlreadyExistException extends Exception {
+import org.springframework.http.HttpStatus;
+
+public class AlreadyExistException extends BaseException {
     public AlreadyExistException(String message){
-        super(message);
+        super(message, HttpStatus.CONFLICT);
     }
 }

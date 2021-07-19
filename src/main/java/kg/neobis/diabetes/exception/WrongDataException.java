@@ -1,7 +1,17 @@
 package kg.neobis.diabetes.exception;
 
-public class WrongDataException extends Exception{
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
+
+@Setter
+@Getter
+public class WrongDataException extends BaseException{
+
     public WrongDataException(String message){
-        super(message);
+        super(message, HttpStatus.BAD_REQUEST);
+    }
+    public WrongDataException(String message, HttpStatus status){
+        super(message, status);
     }
 }

@@ -55,7 +55,7 @@ public class RestorePasswordService {
         repository.save(restorePassword);
     }
 
-    public AuthenticationResponse doStep2(ModelToConfirmEmail model) throws RecordNotFoundException, WrongDataException, Exception {
+    public AuthenticationResponse doStep2(ModelToConfirmEmail model) throws Exception {
         RestorePassword restorePassword = repository.findByEmail(model.getEmail());
         if(restorePassword == null)
             throw  new RecordNotFoundException("на почту " + model.getEmail() + " код не был отправлен");

@@ -1,9 +1,11 @@
 package kg.neobis.diabetes.exception;
 
-public class RecordNotFoundException extends Exception{
+import org.springframework.http.HttpStatus;
+
+public class RecordNotFoundException extends BaseException{
 
     public RecordNotFoundException(String message){
-        super(message);
+        super(message, HttpStatus.NOT_FOUND);
     }
 
 }

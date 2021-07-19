@@ -13,6 +13,7 @@ import kg.neobis.diabetes.repositories.UserRepository;
 import kg.neobis.diabetes.services.impl.EmailSenderService;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -79,7 +80,7 @@ public class RegistrationService {
         if(!isEmailValid(registrationModel.getEmail()))
             throw new WrongDataException("email is not valid");
         else if(isEmailExist(registrationModel.getEmail()))
-            throw new WrongDataException("email is already exist");
+            throw new WrongDataException("email is already exist",HttpStatus.OK);
         else if(!isPasswordValid(registrationModel.getPassword()))
             throw new WrongDataException("password is not valid");
         else if(!registrationModel.getPassword().equals(registrationModel.getConfirmPassword()))
@@ -89,13 +90,14 @@ public class RegistrationService {
         String confirmCode = getRandomFourDigitNumber();
         emailSenderService.sendEmailToConfirmEmail(registrationModel.getEmail(), confirmCode);
 
-        ConfirmEmail confirmEmail = new ConfirmEmail();
+        ConfirmEmail confirmEmail = repository.findByEmail(registrationModel.getEmail());
+        if(confirmEmail == null)
+                confirmEmail = new ConfirmEmail();
         confirmEmail.setEmail(registrationModel.getEmail());
         confirmEmail.setPassword(registrationModel.getPassword());
         confirmEmail.setCode(confirmCode);
         confirmEmail.setCreatedDate(new java.util.Date());
         repository.save(confirmEmail);
-
 
     }
 
@@ -121,6 +123,7 @@ public class RegistrationService {
         return ResponseEntity.ok(authenticate(user));
 
     }
+
 
     public void doStep3(QuestioningModel model) {
 

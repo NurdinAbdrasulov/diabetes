@@ -34,7 +34,9 @@ public class StatisticsService {
         int female = 0;
 
         for(UserModel userModel: allUsers)
-            if(userModel.getGender().equals(Gender.MALE))
+            if(userModel.getBirthDate() == null)
+                continue;// если у юзера не указана дата рождения
+            else if(userModel.getGender().equals(Gender.MALE))
                 male++;
             else
                 female++;
@@ -53,7 +55,10 @@ public class StatisticsService {
         int notDiabetes = 0;
 
         for(UserModel userModel: allUsers)
-            if(userModel.getDiabetesStatus().equals(DiabetesStatus.NONE))
+            if(userModel.getBirthDate() == null)
+                continue;// если у юзера не указана дата рождения
+
+            else if(userModel.getDiabetesStatus().equals(DiabetesStatus.NONE))
                 notDiabetes++;
             else
                 diabetes++;

@@ -115,13 +115,11 @@ public class RegistrationService {
         user.setPassword(confirmEmail.getPassword());
         userRepository.save(user);
 
-
         return ResponseEntity.ok(authenticate(user));
-
     }
 
 
-    public void doStep3(QuestioningModel model) {
+    public UserModel doStep3(QuestioningModel model) {
 
         User user = userService.getCurrentUser();
         user.setName(model.getName());
@@ -130,7 +128,7 @@ public class RegistrationService {
         user.setDiabetesStatus(DiabetesStatus.values()[model.getDiabetesStatusId()]);
         user.setWeight(model.getWeight());
         user.setHeight(model.getHeight());
-        userRepository.save(user);
+        return userService.convertToModel(userRepository.save(user));
     }
 
 

@@ -52,9 +52,8 @@ public class RegistrationController {
     }
 
     @PostMapping("/step3")//questioning
-    public ResponseEntity<MessageModel> step3(@RequestBody QuestioningModel model){
-        registrationService.doStep3(model);
-        return ResponseEntity.ok(new MessageModel("successfully added"));
+    public ResponseEntity<UserModel> step3(@RequestBody QuestioningModel model){
+        return ResponseEntity.ok(registrationService.doStep3(model));
     }
 
     @GetMapping("/getGenders")

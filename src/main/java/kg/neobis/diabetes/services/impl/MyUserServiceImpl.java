@@ -81,13 +81,6 @@ public class MyUserServiceImpl implements UserDetailsService {
 //        return model;
 //    }
 
-//    private Set<GroupModel> getGroupModels(Set<GroupOfPeople> groupOfPeople ){
-//        Set<GroupModel> resultSet = new HashSet<>();
-//        for(GroupOfPeople group: groupOfPeople)
-//            resultSet.add(new GroupModel(group.getId(), group.getName(),group.getGroupStatus()));
-//        return resultSet;
-//    }
-
     public void setNewPassword(ModelToChangePassword model) throws WrongDataException {
         User user = getCurrentUser();
 
@@ -117,9 +110,6 @@ public class MyUserServiceImpl implements UserDetailsService {
         return list;
 
     }
-
-//    public ResponseEntity<List<UserModel>> getAll() {
-//    }
 
     public Page<UserModel> getAllUsers(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
@@ -161,7 +151,20 @@ public class MyUserServiceImpl implements UserDetailsService {
             resultList.add(model);
         }
         return resultList;
+    }
 
+    public UserModel convertToModel(User user){
+        UserModel model = new UserModel();
+        model.setId(user.getId());
+        model.setEmail(user.getEmail());
+        model.setHeight(user.getHeight());
+        model.setWeight(user.getWeight());
+        model.setGender(user.getGender());
+        model.setName(user.getName());
+        model.setDiabetesStatus(user.getDiabetesStatus());
+        model.setBirthDate(user.getBirthDate());
+
+        return model;
     }
 
 //    public void updateUser(ModelToUpdateUser model) throws RecordNotFoundException {

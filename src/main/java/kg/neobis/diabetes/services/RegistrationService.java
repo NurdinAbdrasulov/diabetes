@@ -21,11 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 @Service
 public class RegistrationService {
@@ -87,7 +83,7 @@ public class RegistrationService {
             throw new WrongDataException("confirm password is wrong");
 
 
-        String confirmCode = getRandomFourDigitNumber();
+        String confirmCode = getRandomSixDigitNumber();
         emailSenderService.sendEmailToConfirmEmail(registrationModel.getEmail(), confirmCode);
 
         ConfirmEmail confirmEmail = repository.findByEmail(registrationModel.getEmail());
@@ -101,7 +97,7 @@ public class RegistrationService {
 
     }
 
-    public String getRandomFourDigitNumber(){// на сколько это правильно? При вызове метода каждый раз создается новый объект
+    public String getRandomSixDigitNumber(){// на сколько это правильно? При вызове метода каждый раз создается новый объект
         Random random = new Random();
         return Integer.toString (random.nextInt(900000) + 100000); //100000 - 999999
     }

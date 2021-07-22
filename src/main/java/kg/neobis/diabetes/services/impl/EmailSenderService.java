@@ -23,18 +23,12 @@ public class EmailSenderService {
     private String username;
 
     public void sendEmailToConfirmEmail(String email, String codeToConfirm) {
-//        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-//        simpleMailMessage.setTo(email);
-//        simpleMailMessage.setFrom(username);
-//        simpleMailMessage.setSubject("Подтверждение почты! TEAM#1");
-//        simpleMailMessage.setText("Здравствуйте," + "!\nДля подтверждение почты пожалуйста введите следующий код: " + codeToConfirm);
-//        javaMailSender.send(simpleMailMessage);
 
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            String text = getRegistrationText(codeToConfirm);
+            String text = getRegistrationLetter(codeToConfirm);
 
             helper.setFrom(username);
             helper.setTo(email);
@@ -46,18 +40,33 @@ public class EmailSenderService {
         }
     }
 
-    public void sendEmailToRestorePassword(String email, String codeToConfirm) {
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(email);
-        simpleMailMessage.setFrom(username);
-        simpleMailMessage.setSubject("Восстановление пароля! TEAM#1");
-        simpleMailMessage.setText("Здравствуйте," + "!\nДля восстановление пароля пожалуйста введите следующий код: " + codeToConfirm);
-        javaMailSender.send(simpleMailMessage);
+    public void sendEmailToRestorePassword(String email,String appUserName, String codeToConfirm) {
+//        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+//        simpleMailMessage.setTo(email);
+//        simpleMailMessage.setFrom(username);
+//        simpleMailMessage.setSubject("Восстановление пароля! TEAM#1");
+//        simpleMailMessage.setText("Здравствуйте," + "!\nДля восстановление пароля пожалуйста введите следующий код: " + codeToConfirm);
+//        javaMailSender.send(simpleMailMessage);
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            String text = getPasswordRestoreLetter(codeToConfirm, appUserName);
+
+            helper.setFrom(username);
+            helper.setTo(email);
+            helper.setSubject("Восстановление пароля!");
+            helper.setText(text, true);
+            javaMailSender.send(message);
+        } catch (MessagingException e){
+            System.out.println(e);
+        }
 
     }
 
 
-    private String getRegistrationText(String code){
+    private String getRegistrationLetter(String code){
 /*
     Strings are stored in class file in UTF-8 and the limit is 65535 bytes. String constructed in runtime can be much longer
         So you should either split your string constant on multiple string constants and concatenate them before use or read the value from text file.*/
@@ -229,6 +238,139 @@ public class EmailSenderService {
                 "\n" +
                 "</table>";
         return part1 + part2;
+    }
+
+    private String getPasswordRestoreLetter(String code, String username){
+        return " <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" style=\"max-width: 600px; background-color: rgb(31, 31, 31) !important; border-radius: 6px; overflow: hidden;\" align=\"center\" bgcolor=\"#1F1F1F\">\n" +
+                "\n" +
+                " \t<tr>\n" +
+                " \t\t<td>\n" +
+                "\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" style=\"max-width: 600px; background-color: rgb(31, 31, 31) !important; border-radius: 6px; overflow: hidden;\" align=\"center\" bgcolor=\"#1F1F1F\">\n" +
+                "\t\t \t<tbody style=\"border-color: rgb(31, 31, 31) !important;\">\n" +
+                "\t\t\t\t<tr style=\"border-color: rgb(31, 31, 31) !important;\">\n" +
+                "\t\t\t\t  <td align=\"center\" style=\"border-color: rgb(31, 31, 31) !important;\">\n" +
+                "\n" +
+                "\t\t\t\t\t  <div style=\"height: 20px; line-height: 20px; font-size: 20px; border-color: rgb(31, 31, 31) !important;\">&nbsp;</div>\n" +
+                "\n" +
+                "\t\t\t\t\t  <a href=\"https://www.google.com/\" target=\"_blank\" style=\"text-decoration: none; color: rgb(255, 135, 83) !important; font-size: 18px; border-color: rgb(255, 135, 83)  !important;font-weight: bold\">\n" +
+                "\t\t\t\t\t\t  <span style=\"font-family: Arial, sans-serif; font-size: 33px; line-height: 40px;\">TraDa</span>\n" +
+                "\t\t\t\t\t  </a>\n" +
+                "\t\t\t\t\t  <div style=\"height: 38px; line-height: 38px; font-size: 38px; border-color: rgb(31, 31, 31) !important;\">&nbsp;</div>\n" +
+                "\t\t\t\t\t</td>\n" +
+                "\t\t\t\t</tr>\n" +
+                "\t\t\t</tbody>\n" +
+                "\t\t</table>\n" +
+                "\n" +
+                "\t\t</td>\n" +
+                "\t</tr>\n" +
+                "\n" +
+                "\n" +
+                "\t<tr style=\"border-color: rgb(31, 31, 31) !important;\"> \n" +
+                "\t\t<td align=\"center\" style=\"border-color: rgb(31, 31, 31) !important;\">\n" +
+                "\n" +
+                "\t\t <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"95%\" style=\"max-width: 500px; border-color: rgb(255, 255, 255) !important;\" align=\"center\"> \n" +
+                "\t\t \t<tbody style=\"border-color: rgb(31, 31, 31) !important;\">\n" +
+                "\n" +
+                "\t\t \t\t<tr> \n" +
+                "\t\t\t \t\t<td align=\"center\" style=\"border-color: rgb(31, 31, 31) !important;\">\n" +
+                "\t\t\t\t\t\t<div style=\"max-width: 440px; width: 100%; font-family: Arial, sans-serif; font-size: 33px; line-height: 40px; color: rgb(215, 220, 226) !important; font-weight: bold; text-align: center; border-color: rgb(31, 31, 31) !important;\" align=\"center\"> Здоровый образ жизни!\n" +
+                "\t\t\t\t\t\t</div>\n" +
+                "\n" +
+                "\t\t\t \t\t\t<div style=\"height: 28px; line-height: 28px; font-size: 28px; border-color: rgb(31, 31, 31) !important;\">&nbsp;</div>\n" +
+                "\t\t\t\t\t\t\t\n" +
+                "\t\t\t\t\t\t<img src=\"https://cloclo23.datacloudmail.ru/weblink/view/39YR/4vfDLZWts?etag=70538B47BE571FE6C02325A898D403E96487038A\" alt=\"forgotPassword\" style=\"display: block; max-width: 500%; width: 100%; height: auto; font-family: Arial, sans-serif; color: rgb(88, 147, 255) !important; font-size: 18px; border-radius: 4px; border-width: initial; border-style: none; border-color: rgb(31, 31, 31) !important; border-image: initial;\">  \n" +
+                "\n" +
+                "\t\t\t\t\t\t<div style=\"height: 22px; line-height: 22px; font-size: 22px; border-color: rgb(31, 31, 31) !important;\">&nbsp;</div>\n" +
+                "\n" +
+                "\t\t\t\t\t\t<div style=\"font-family: Arial, sans-serif; font-size: 16px; line-height: 24px; color: rgb(215, 220, 226) !important; font-weight: 400; text-align: left; border-color: rgb(31, 31, 31) !important;\" align=\"left\"> Здравствуйте, " + username +"!\n" +
+                "\t\t\t\t\t\t</div>\n" +
+                "\n" +
+                "\n" +
+                "\t\t\t\t\t\t<div style=\"height: 10px; line-height: 10px; font-size: 10px; border-color: rgb(31, 31, 31) !important;\">&nbsp;</div>\n" +
+                "\n" +
+                "\t\t\t\t\t\t<div style=\"font-family: Arial, sans-serif; font-size: 16px; line-height: 24px; color: rgb(215, 220, 226) !important; font-weight: 400; text-align: left; border-color: rgb(31, 31, 31) !important;\" align=\"left\">\n" +
+                "\t\t\t\t\t\t\tКод для восстановления пароля:\n" +
+                "\t\t\t\t\t\t</div>\n" +
+                "\t\t\t\t\t\t<div style=\"height: 25px; line-height: 10px; font-size: 10px; border-color: rgb(31, 31, 31) !important;\">&nbsp;</div>\n" +
+                "\t\t\t\t\t\t<span style=\"background: #249005; padding: 5px; border-radius: 5px; font-size: 30px; color: #E7E7E7;  text-decoration: none\">" + code + "</span>\n" +
+                "\t\t\t\t\t</td>\n" +
+                "\t\t\t\t</tr>\n" +
+                "\t\t\t</tbody>\n" +
+                "\t\t</table>\n" +
+                "\n" +
+                "\t\t</td>\n" +
+                "\t</tr>\n" +
+                "\n" +
+                "\n" +
+                "<tr>\n" +
+                "<td align=\"center\" style=\"border-color: rgb(31, 31, 31) !important;\">\n" +
+                "\n" +
+                "\t<div style=\"height: 45px; line-height: 35px; font-size: 35px; border-color: rgb(31, 31, 31) !important;\">&nbsp;</div>\n" +
+                "\n" +
+                "\t<div style=\"font-family: Arial, sans-serif; font-size: 12px; line-height: 20px; color: rgb(215, 220, 226) !important; font-weight: 400; letter-spacing: 1px; text-transform: uppercase; border-color: rgb(31, 31, 31) !important;\"> Мы в соцсетях \n" +
+                "\t</div>\n" +
+                "\n" +
+                "\t<div style=\"height: 7px; line-height: 7px; font-size: 7px; border-color: rgb(31, 31, 31) !important;\">&nbsp;\n" +
+                "\t</div>\n" +
+                "\n" +
+                "\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"264\" align=\"center\" style=\"border-color: rgb(255, 255, 255) !important;\"> \n" +
+                "\t\t\t<tbody style=\"border-color: rgb(31, 31, 31) !important;\">\n" +
+                "\n" +
+                "\t\t\t\t<tr> \n" +
+                "\t\t\t\t\t<td align=\"center\" style=\"border-color: rgb(31, 31, 31) !important;\"> \n" +
+                "\t\t\t\t\t\t<a href=\"https://www.google.com/\" target=\"_blank\" style=\"text-decoration: none; color: rgb(88, 147, 255) !important; border-color: rgb(31, 31, 31) !important;\" rel=\" noopener noreferrer\">\n" +
+                "\t\t\t\t\t\t\t<!-- facebook -->\n" +
+                "\t\t\t\t\t\t\t<img src=\"https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Facebook-128.png\" alt=\"fb\" width=\"40\" height=\"40\" style=\"display: block; font-family: Arial, sans-serif; color: rgb(88, 147, 255) !important; font-size: 18px; border-width: initial; border-style: none; border-color: rgb(31, 31, 31) !important; border-image: initial;\"> \n" +
+                "\t\t\t\t\t\t</a> \n" +
+                "\t\t\t\t\t</td>\n" +
+                "\n" +
+                "\t\t\t\t\t<td align=\"center\" width=\"16\" style=\"border-color: rgb(31, 31, 31) !important;\">&nbsp;</td>\n" +
+                "\n" +
+                "\t\t\t\t\t\t<td align=\"center\" style=\"border-color: rgb(31, 31, 31) !important;\"> \n" +
+                "\n" +
+                "\t\t\t\t\t\t<a href=\"https://www.google.com/\" target=\"_blank\" style=\"text-decoration: none; color: rgb(88, 147, 255) !important; border-color: rgb(31, 31, 31) !important;\" rel=\" noopener noreferrer\">\n" +
+                "\t\t\t\t\t\t\t<!-- вк -->\n" +
+                "\t\t\t\t\t\t<img src=\"https://cdn0.iconfinder.com/data/icons/social-network-7/50/11-512.png\" alt=\"vk\" width=\"40\" height=\"40\" style=\"display: block; font-family: Arial, sans-serif; color: rgb(88, 147, 255) !important; font-size: 18px; border-width: initial; border-style: none; border-color: rgb(31, 31, 31) !important; border-image: initial;\"> \n" +
+                "\t\t\t\t\t\t</a> \n" +
+                "\t\t\t\t\t</td>\n" +
+                "\n" +
+                "\t\t\t\t\t<td align=\"center\" width=\"16\" style=\"border-color: rgb(31, 31, 31) !important;\">&nbsp;</td>\n" +
+                "\n" +
+                "\t\t\t\t\t<td align=\"center\" style=\"border-color: rgb(31, 31, 31) !important;\"> \n" +
+                "\n" +
+                "\t\t\t\t\t\t<a href=\"https://t.me/vitment\" target=\"_blank\" style=\"text-decoration: none; color: rgb(88, 147, 255) !important; border-color: rgb(31, 31, 31) !important;\" rel=\" noopener noreferrer\">\n" +
+                "\t\t\t\t\t\t\t<!--телега -->\n" +
+                "\t\t\t\t\t\t\t<img src=\"https://cdn3.iconfinder.com/data/icons/social-network-30/512/social-07-512.png\" alt=\"tgm\" width=\"40\" height=\"40\" style=\"display: block; font-family: Arial, sans-serif; color: rgb(88, 147, 255) !important; font-size: 18px; border-width: initial; border-style: none; border-color: rgb(31, 31, 31) !important; border-image: initial;\"> \n" +
+                "\t\t\t\t\t\t</a> \n" +
+                "\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t<td align=\"center\" width=\"16\" style=\"border-color: rgb(31, 31, 31) !important;\">&nbsp;</td>\n" +
+                "\n" +
+                "\t\t\t\t\t<td align=\"center\" style=\"border-color: rgb(31, 31, 31) !important;\"> \n" +
+                "\t\t\t\t\t\t<a href=\"https://www.instagram.com/neobis.kg/\" target=\"_blank\" style=\"text-decoration: none; color: rgb(88, 147, 255) !important; border-color: rgb(31, 31, 31) !important;\" rel=\" noopener noreferrer\">\n" +
+                "\t\t\t\t\t\t\t<!-- инста -->\n" +
+                "\t\t\t\t\t\t\t<img src=\"https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Instagram-512.png\" alt=\"insta\" width=\"40\" height=\"40\" style=\"display: block; font-family: Arial, sans-serif; color: rgb(88, 147, 255) !important; font-size: 18px; border-width: initial; border-style: none; border-color: rgb(31, 31, 31) !important; border-image: initial;\"> \n" +
+                "\t\t\t\t\t\t</a> \n" +
+                "\t\t\t\t\t</td>\n" +
+                "\n" +
+                "\t\t\t\t</tr>\n" +
+                "\t\t\t</tbody>\n" +
+                "\t</table>\n" +
+                "\n" +
+                "\t<div style=\"height: 20px; line-height: 27px; font-size: 27px; border-color: rgb(31, 31, 31) !important;\">&nbsp;</div>\n" +
+                "\t<div style=\"font-family: Arial, sans-serif; font-size: 12px; line-height: 18px; color: rgb(215, 220, 226) !important; font-weight: 400; border-color: rgb(31, 31, 31) !important;\"> Если что-то не&nbsp;получилось, или остались вопросы:\n" +
+                "\t</div>\n" +
+                "\t<div style=\"height: 3px; line-height: 3px; font-size: 3px; border-color: rgb(31, 31, 31) !important;\">&nbsp;\n" +
+                "\t</div>\n" +
+                "\t<a href=\"#\" style=\"text-decoration: none; font-family: Arial, sans-serif; font-size: 20px; line-height: 18px; color: rgb(215, 220, 226) !important; font-weight: bold; border-color: rgb(31, 31, 31) !important;\" target=\"_blank\" rel=\" noopener noreferrer\">\n" +
+                "\t\t+996&nbsp;778&nbsp;630-008\n" +
+                "\t</a>\n" +
+                "\t<div style=\"height: 22px; line-height: 22px; font-size: 22px; border-color: rgb(31, 31, 31) !important;\">&nbsp;</div>\n" +
+                "\t<div style=\"font-family: Arial, sans-serif; font-size: 12px; line-height: 18px; color: rgb(215, 220, 226) !important; font-weight: 400; border-color: rgb(31, 31, 31) !important;\"> Вы&nbsp;получили письмо, так как Ваш email был указан при регистрации в приложении TraDa </div>\n" +
+                "\t<div style=\"height: 5px; line-height: 5px; font-size: 5px; border-color: rgb(31, 31, 31) !important;\">&nbsp;</div>\n" +
+                "\t<div style=\"height: 50px; line-height: 50px; font-size: 50px; border-color: rgb(31, 31, 31) !important;\">&nbsp;</div>\n" +
+                "</td>\n" +
+                "</tr>\n" +
+                "</table>";
     }
 
 }

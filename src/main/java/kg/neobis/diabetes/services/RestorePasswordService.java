@@ -1,12 +1,10 @@
 package kg.neobis.diabetes.services;
 
-import javassist.NotFoundException;
 import kg.neobis.diabetes.entity.RestorePassword;
 import kg.neobis.diabetes.entity.User;
 import kg.neobis.diabetes.exception.AlreadyExistException;
 import kg.neobis.diabetes.exception.RecordNotFoundException;
 import kg.neobis.diabetes.exception.WrongDataException;
-import kg.neobis.diabetes.models.ModelToChangePassword;
 import kg.neobis.diabetes.models.ModelToConfirmEmail;
 import kg.neobis.diabetes.models.RestorePasswordModel;
 import kg.neobis.diabetes.models.security.AuthenticationResponse;
@@ -14,6 +12,7 @@ import kg.neobis.diabetes.repositories.RestorePasswordRepository;
 import kg.neobis.diabetes.services.impl.EmailSenderService;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -39,14 +38,15 @@ public class RestorePasswordService {
      * @param email
      */
     public void doStep1(String email) throws RecordNotFoundException, AlreadyExistException {
-        if(userService.getByEmail(email) == null)
+        User user = userService.getByEmail(email);
+        if(user == null)
             throw new RecordNotFoundException("пользователь с почтой " + email + " не существует");
         if(repository.findByEmail(email) != null)
-            throw new AlreadyExistException("на указанную почту" + email + "уже был отправлен код для восстановления пароля");
+            throw new AlreadyExistException("на почту" + email + "уже был отправлен код для восстановления пароля", HttpStatus.OK);
 
-        String  codeToRestorePassword = registrationService.getRandomFourDigitNumber();
+        String  codeToRestorePassword = registrationService.getRandomSixDigitNumber();
 
-        emailSenderService.sendEmailToRestorePassword(email, codeToRestorePassword);// try catch если ввел не сущ почту
+        emailSenderService.sendEmailToRestorePassword(email, user.getName(), codeToRestorePassword);
 
         RestorePassword restorePassword = new RestorePassword();
         restorePassword.setEmail(email);

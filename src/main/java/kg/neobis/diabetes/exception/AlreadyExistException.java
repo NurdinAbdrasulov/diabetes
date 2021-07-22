@@ -4,6 +4,9 @@ import org.springframework.http.HttpStatus;
 
 public class AlreadyExistException extends BaseException {
     public AlreadyExistException(String message){
-        super(message, HttpStatus.CONFLICT);
+        this(message, HttpStatus.CONFLICT);
+    }
+    public AlreadyExistException(String message, HttpStatus status){
+        super(message, status);
     }
 }

@@ -31,16 +31,11 @@ import java.util.Set;
 public class MyUserServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserPaginationRepository paginationRepository;
-    private final NormalUserPropertiesService normalService;
-
-    private final WidgetService widgetService;
 
     @Autowired
-    public MyUserServiceImpl(UserRepository userRepository, WidgetService widgetService, UserPaginationRepository paginationRepository, NormalUserPropertiesService normalService) {
+    public MyUserServiceImpl(UserRepository userRepository, UserPaginationRepository paginationRepository) {
         this.userRepository = userRepository;
-        this.widgetService = widgetService;
         this.paginationRepository = paginationRepository;
-        this.normalService = normalService;
     }
 
     @Override
@@ -101,25 +96,6 @@ public class MyUserServiceImpl implements UserDetailsService {
         userRepository.save(user);
     }
 
-    private boolean isTime(String value){
-        return value.matches("^[0-2][0-3]:[0-5][0-9]$");
-    }
-    public List<WidgetModel> setWidgets(UsersWidgetsModel model) {
-        if(model.getUserSleep() != null && (!isTime(model.getUserSleep().getEndTime()) || !isTime(model.getUserSleep().getStartTime())))
-            throw new WrongDataException("время должно быть в формате HH:mm");
-
-       // normalService.setUserSleep(model.getUserSleep(), getCurrentUser());
-
-        UserWidgets userWidgets = widgetService.setWidgetsForCurrentUser(model, getCurrentUser());
-        Set<Widgets> widgets = userWidgets.getWidgets();
-
-        List<WidgetModel> list = new ArrayList<>();
-        for(Widgets widget :  widgets)
-            list.add(new WidgetModel(widget.getId(), widget.getName()));
-
-        return list;
-
-    }
 
     public Page<UserModel> getAllUsers(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));

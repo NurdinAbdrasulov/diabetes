@@ -10,6 +10,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ModelToAddNormalUserSleep {
-    private Date startTime;
-    private Date endTime;
+    private String startTime;
+    private String endTime;
 }

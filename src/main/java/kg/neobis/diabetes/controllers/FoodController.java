@@ -2,7 +2,6 @@ package kg.neobis.diabetes.controllers;
 
 import javassist.NotFoundException;
 import kg.neobis.diabetes.models.FoodModel;
-import kg.neobis.diabetes.models.UserModel;
 import kg.neobis.diabetes.services.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,11 +28,11 @@ public class FoodController {
     }
 
     @PutMapping("update")
-    public ResponseEntity update(@RequestBody FoodModel model){
+    public ResponseEntity<?> update(@RequestBody FoodModel model){
         try {
             return ResponseEntity.ok(service.update(model));
         } catch (NotFoundException e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 

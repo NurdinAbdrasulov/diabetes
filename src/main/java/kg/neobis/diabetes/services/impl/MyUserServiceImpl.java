@@ -11,11 +11,11 @@ import kg.neobis.diabetes.models.WidgetModel;
 import kg.neobis.diabetes.models.security.MyUserDetails;
 import kg.neobis.diabetes.repositories.UserPaginationRepository;
 import kg.neobis.diabetes.repositories.UserRepository;
+import kg.neobis.diabetes.services.NormalUserPropertiesService;
 import kg.neobis.diabetes.services.RegistrationService;
 import kg.neobis.diabetes.services.WidgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,14 +31,16 @@ import java.util.Set;
 public class MyUserServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserPaginationRepository paginationRepository;
+    private final NormalUserPropertiesService normalService;
 
     private final WidgetService widgetService;
 
     @Autowired
-    public MyUserServiceImpl(UserRepository userRepository, WidgetService widgetService, UserPaginationRepository paginationRepository) {
+    public MyUserServiceImpl(UserRepository userRepository, WidgetService widgetService, UserPaginationRepository paginationRepository, NormalUserPropertiesService normalService) {
         this.userRepository = userRepository;
         this.widgetService = widgetService;
         this.paginationRepository = paginationRepository;
+        this.normalService = normalService;
     }
 
     @Override
@@ -99,7 +101,15 @@ public class MyUserServiceImpl implements UserDetailsService {
         userRepository.save(user);
     }
 
+    private boolean isTime(String value){
+        return value.matches("^[0-2][0-3]:[0-5][0-9]$");
+    }
     public List<WidgetModel> setWidgets(UsersWidgetsModel model) {
+        if(model.getUserSleep() != null && (!isTime(model.getUserSleep().getEndTime()) || !isTime(model.getUserSleep().getStartTime())))
+            throw new WrongDataException("время должно быть в формате HH:mm");
+
+       // normalService.setUserSleep(model.getUserSleep(), getCurrentUser());
+
         UserWidgets userWidgets = widgetService.setWidgetsForCurrentUser(model, getCurrentUser());
         Set<Widgets> widgets = userWidgets.getWidgets();
 

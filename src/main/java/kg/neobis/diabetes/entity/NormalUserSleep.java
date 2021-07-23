@@ -19,11 +19,11 @@ public class NormalUserSleep {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "start_time", nullable = false)
-    private Date startTime;
+    @Column(name = "start_time", nullable = false, length = 10)
+    private String startTime;
 
-    @Column(name = "end_time", nullable = false)
-    private Date endTime;
+    @Column(name = "end_time", nullable = false, length = 10)
+    private String endTime;
 
     @ManyToOne
     private User user;

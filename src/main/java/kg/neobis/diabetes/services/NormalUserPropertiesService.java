@@ -1,5 +1,8 @@
 package kg.neobis.diabetes.services;
 
+import kg.neobis.diabetes.entity.NormalUserSleep;
+import kg.neobis.diabetes.entity.User;
+import kg.neobis.diabetes.models.ModelToAddNormalUserSleep;
 import kg.neobis.diabetes.repositories.NormalUserPressureRepository;
 import kg.neobis.diabetes.repositories.NormalUserSleepRepository;
 import kg.neobis.diabetes.repositories.NormalUserSugarRepository;
@@ -21,4 +24,12 @@ public class NormalUserPropertiesService {
     }
 
 
+    public void setUserSleep(ModelToAddNormalUserSleep model, User user) {
+        NormalUserSleep userSleep = new NormalUserSleep();
+        userSleep.setStartTime(model.getStartTime());
+        userSleep.setEndTime(model.getEndTime());
+        userSleep.setUser(user);
+
+        sleepRepository.save(userSleep);
+    }
 }

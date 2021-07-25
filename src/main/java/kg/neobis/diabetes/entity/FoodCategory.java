@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Food {
+public class FoodCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,21 +22,4 @@ public class Food {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "proteins")
-    private Double proteins;
-
-    @Column(name = "fats")
-    private Double fats;
-
-    @Column(name = "carbohydrates")
-    private Double carbohydrates;
-
-    @Column(name = "calories")
-    private Double calories;
-
-    @ManyToOne
-    private User user;
-
-    @ManyToOne
-    private FoodCategory category;
 }

@@ -2,6 +2,7 @@ package kg.neobis.diabetes.services;
 
 import javassist.NotFoundException;
 import kg.neobis.diabetes.entity.Food;
+import kg.neobis.diabetes.entity.FoodCategory;
 import kg.neobis.diabetes.models.FoodModel;
 import kg.neobis.diabetes.repositories.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,5 +72,13 @@ public class FoodService {
 
 
         return convertToFoodModel(repository.save(food));
+    }
+
+    public void deleteCategory(FoodCategory category){
+        List<Food> byCategory = repository.findByCategory(category);
+        for( Food food: byCategory){
+            food.setCategory(null);
+            repository.save(food);
+        }
     }
 }

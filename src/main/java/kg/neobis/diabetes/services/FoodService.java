@@ -3,7 +3,9 @@ package kg.neobis.diabetes.services;
 import javassist.NotFoundException;
 import kg.neobis.diabetes.entity.Food;
 import kg.neobis.diabetes.entity.FoodCategory;
+import kg.neobis.diabetes.exception.RecordNotFoundException;
 import kg.neobis.diabetes.models.FoodModel;
+import kg.neobis.diabetes.models.ModelToAddFood;
 import kg.neobis.diabetes.repositories.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +21,16 @@ public class FoodService {
     private final FoodRepository repository;
 
     @Autowired
+    private  FoodCategoryService foodCategoryService;
+
+    @Autowired
     FoodService(FoodRepository repository){
         this.repository = repository;
     }
 
 
     public List<FoodModel> getAll() {
-        List<Food> all = repository.findAll();
+        List<Food> all = repository.findAllByUserIsNull();
         List<FoodModel> resultList = new ArrayList<>();
 
         for(Food food: all){
@@ -35,13 +40,15 @@ public class FoodService {
         return resultList;
     }
 
-    public FoodModel add(FoodModel model) {
+    public FoodModel add(ModelToAddFood model) throws RecordNotFoundException{
         Food food = new Food();
         food.setName(model.getName());
         food.setProteins(model.getProteins());
         food.setFats(model.getFats());
         food.setCarbohydrates(model.getCarbohydrates());
         food.setCalories(model.getCalories());///////////
+        FoodCategory category = foodCategoryService.getRealCategory(model.getCategoryId());
+        food.setCategory(category);
 
         return convertToFoodModel(repository.save(food));
     }
@@ -55,20 +62,28 @@ public class FoodService {
         model.setFats(food.getFats());
         model.setCarbohydrates(food.getCarbohydrates());
         model.setCalories(food.getCalories());
+
+        if(food.getUser() == null && food.getCategory() != null)
+            model.setCategory(foodCategoryService.convertToModel(food.getCategory()));
         return model;
     }
 
-    public FoodModel update(FoodModel model) throws NotFoundException {
-        Optional<Food> optionalFood = repository.findById(model.getId());
+    public FoodModel update( Long id, ModelToAddFood model) throws RecordNotFoundException {
+        Optional<Food> optionalFood = repository.findById(id);
         if(optionalFood.isEmpty())
-            throw new NotFoundException("нет продукта с id "  + model.getId());
+            throw new RecordNotFoundException("нет продукта с id "  + id);
 
         Food food = optionalFood.get();
         food.setName(model.getName());
         food.setProteins(model.getProteins());
         food.setFats(model.getFats());
         food.setCarbohydrates(model.getCarbohydrates());
-        food.setCalories(model.getCalories());///////////
+        food.setCalories(model.getCalories());
+
+        if(model.getCategoryId() != null) {
+            FoodCategory category = foodCategoryService.getRealCategory(model.getCategoryId());
+            food.setCategory(category);
+        }
 
 
         return convertToFoodModel(repository.save(food));
@@ -80,5 +95,25 @@ public class FoodService {
             food.setCategory(null);
             repository.save(food);
         }
+    }
+
+    public ResponseEntity<?> getById(Long id) {
+
+        Optional<Food> byId = repository.findById(id);
+        if(byId.isEmpty())
+            throw new RecordNotFoundException("нет еды с id " + id);
+
+        return ResponseEntity.ok(convertToFoodModel(byId.get()));
+
+    }
+
+    // TO DO
+    public Object delete(Long id) {
+        Optional<Food> byId = repository.findById(id);
+        if(byId.isEmpty())
+            throw new RecordNotFoundException("нет еды с id " + id);
+
+        return ResponseEntity.ok("Типа удалено)");
+
     }
 }

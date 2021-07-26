@@ -2,7 +2,7 @@ package kg.neobis.diabetes.services;
 
 import kg.neobis.diabetes.entity.Medication;
 import kg.neobis.diabetes.models.MedicationModel;
-import kg.neobis.diabetes.models.ModelToAddMedication;
+import kg.neobis.diabetes.models.ModelToAddMedications;
 import kg.neobis.diabetes.repositories.MedicationRepository;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,23 +24,17 @@ public class MedicationService {
     }
 
 
-    public List<MedicationModel>  creatMedication(List<ModelToAddMedication> models) {
 
-        List<Medication> list = new ArrayList<>();
-        for(var model: models) {
+    public List<MedicationModel>  creatMedication(ModelToAddMedications model) {
+        List<Medication> medications = new ArrayList<>();
+        for(String medName : model.getNames()){
             Medication medication = new Medication();
-            medication.setName(model.getName());
+            medication.setName(medName);
             medication.setUser(userService.getCurrentUser());
-            list.add(repository.save(medication));
+            medications.add(repository.save(medication));
         }
-        return convertToModel(list);
-    }
 
-    public MedicationModel  creatMedication(ModelToAddMedication model) {
-        Medication medication = new Medication();
-        medication.setName(model.getName());
-        medication.setUser(userService.getCurrentUser());
-        return convertToModel(medication);
+        return convertToModel(medications);
     }
 
     public List<MedicationModel> convertToModel(List<Medication> medications){

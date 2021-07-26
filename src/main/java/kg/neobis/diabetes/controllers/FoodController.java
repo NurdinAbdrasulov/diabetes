@@ -1,7 +1,10 @@
 package kg.neobis.diabetes.controllers;
 
 import javassist.NotFoundException;
+import kg.neobis.diabetes.exception.RecordNotFoundException;
 import kg.neobis.diabetes.models.FoodModel;
+import kg.neobis.diabetes.models.MessageModel;
+import kg.neobis.diabetes.models.ModelToAddFood;
 import kg.neobis.diabetes.services.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,24 +25,47 @@ public class FoodController {
         this.service = service;
     }
 
-    @GetMapping("getAll")
+    @GetMapping
     public ResponseEntity<List<FoodModel>> getAll(){
         return ResponseEntity.ok(service.getAll());
     }
 
-    @PutMapping("update")
-    public ResponseEntity<?> update(@RequestBody FoodModel model){
+    @GetMapping("{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id){
         try {
-            return ResponseEntity.ok(service.update(model));
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return service.getById(id);
+        } catch (RecordNotFoundException e){
+            return new ResponseEntity<>(new MessageModel(e.getMessage()), e.getStatus());
+        }
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> update(@PathVariable Long id,@RequestBody ModelToAddFood model){
+        try {
+            return ResponseEntity.ok(service.update(id, model));
+        } catch (RecordNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), e.getStatus());
         }
     }
 
     // добавить валидации: продукт уже сущ, пустыне поля и тд
-    @PostMapping("add")
-    public ResponseEntity<FoodModel> add(@RequestBody FoodModel model){
-        return ResponseEntity.ok(service.add(model));
+    @PostMapping
+    public ResponseEntity<?> add(@RequestBody ModelToAddFood model){
+        try {
+            return ResponseEntity.ok(service.add(model));
+        } catch (RecordNotFoundException e){
+            return new ResponseEntity<>(new MessageModel(e.getMessage()), e.getStatus());
+        }
+    }
+
+    // TO DO
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(service.delete(id));
+        } catch (RecordNotFoundException e){
+            return new ResponseEntity<>(new MessageModel(e.getMessage()), e.getStatus());
+        }
     }
 
 }

@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ModelToAddNormalUserPressure {
-    private Double systolic;
-    private Double diastolic;
+public class ModelToAddMedications {
+    private List<String> names;
 }
-

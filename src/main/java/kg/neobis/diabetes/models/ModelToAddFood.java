@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FoodModel {
-    private Long id;
+public class ModelToAddFood {
     private String name;
-    private FoodCategoryModel category;
+    private Long categoryId;
     private Double proteins;
     private Double fats;
     private Double carbohydrates;

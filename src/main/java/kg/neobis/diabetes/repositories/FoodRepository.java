@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface FoodRepository extends JpaRepository<Food, Long> {
     List<Food> findByCategory(FoodCategory category);
+    List<Food> findAllByUserIsNull();
 }

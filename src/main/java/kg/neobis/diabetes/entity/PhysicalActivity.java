@@ -25,4 +25,7 @@ public class PhysicalActivity {
     @Column(name = "icon")
     @Lob
     private String icon;
+
+    @Column(name = "img_url")
+    private String img_ur;
 }

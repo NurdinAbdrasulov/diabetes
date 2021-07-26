@@ -17,12 +17,13 @@ import java.util.Optional;
 public class FoodCategoryService {
 
     private final FoodCategoryRepository repository;
-    private final FoodService foodService;
 
     @Autowired
-    public FoodCategoryService(FoodCategoryRepository repository, FoodService foodService) {
+    private  FoodService foodService;
+
+    @Autowired
+    public FoodCategoryService(FoodCategoryRepository repository){
         this.repository = repository;
-        this.foodService = foodService;
     }
 
     public ResponseEntity<List<FoodCategoryModel>> getAll() {
@@ -44,7 +45,7 @@ public class FoodCategoryService {
         return result;
     }
 
-    private FoodCategoryModel convertToModel(FoodCategory category){
+    public FoodCategoryModel convertToModel(FoodCategory category){
         return new FoodCategoryModel(category.getId(), category.getName());
     }
 
@@ -71,5 +72,12 @@ public class FoodCategoryService {
             throw new RecordNotFoundException("нет категории с id " + id);
         foodService.deleteCategory(byId.get());
         repository.deleteById(id);
+    }
+
+    public FoodCategory getRealCategory(Long id) throws RecordNotFoundException{
+        Optional<FoodCategory> byId = repository.findById(id);
+        if (byId.isEmpty())
+            throw new RecordNotFoundException("нет категории с id " + id);
+        return byId.get();
     }
 }

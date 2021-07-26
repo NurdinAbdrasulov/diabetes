@@ -27,20 +27,24 @@ public class PhysicalActivityController {
     }
 
     @PostMapping
-    public ResponseEntity<PhysicalActivityModel> create(@RequestParam String name,
+    public ResponseEntity<?> create(@RequestParam String name,
                                                      @RequestParam MultipartFile icon){
+        try {
             return ResponseEntity.ok(service.create(name, icon));
+        } catch (IOException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PostMapping("test")
-    public ResponseEntity<?> createTest(@RequestParam String name,
-                                                        @RequestParam MultipartFile icon) throws IOException {
-        return ResponseEntity.ok(service.createTest(name, icon));
-    }
-    @GetMapping("test/{id}")
-    public ResponseEntity<?> get(@PathVariable Long id) throws IOException {
-        return ResponseEntity.ok(service.testGetByID(id));
-    }
+//    @PostMapping("test")
+//    public ResponseEntity<?> createTest(@RequestParam String name,
+//                                                        @RequestParam MultipartFile icon) throws IOException {
+//        return ResponseEntity.ok(service.createTest(name, icon));
+//    }
+//    @GetMapping("test/{id}")
+//    public ResponseEntity<?> get(@PathVariable Long id) throws IOException {
+//        return ResponseEntity.ok(service.testGetByID(id));
+//    }
 
     @GetMapping
     public ResponseEntity<List<PhysicalActivityModel>> getAll(){
@@ -66,6 +70,8 @@ public class PhysicalActivityController {
             return ResponseEntity.ok(service.update(id, name, icon));
         } catch (RecordNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch ( IOException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

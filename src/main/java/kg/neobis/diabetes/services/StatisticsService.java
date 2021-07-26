@@ -34,8 +34,10 @@ public class StatisticsService {
         int female = 0;
 
         for(UserModel userModel: allUsers)
-            if(userModel.getBirthDate() == null)
+            if(userModel.getGender() == null) {
+                count--;
                 continue;// если у юзера не указана дата рождения
+            }
             else if(userModel.getGender().equals(Gender.MALE))
                 male++;
             else
@@ -55,8 +57,10 @@ public class StatisticsService {
         int notDiabetes = 0;
 
         for(UserModel userModel: allUsers)
-            if(userModel.getBirthDate() == null)
+            if(userModel.getDiabetesStatus() == null){
+                count--;
                 continue;// если у юзера не указана дата рождения
+            }
 
             else if(userModel.getDiabetesStatus().equals(DiabetesStatus.NONE))
                 notDiabetes++;
@@ -93,8 +97,10 @@ public class StatisticsService {
         LocalDate currentDate = LocalDate.now();
 
         for(UserModel userModel: allUsers) {
-            if(userModel.getBirthDate() == null)
+            if(userModel.getBirthDate() == null) {
+                allUserNumber--;
                 continue;// если у юзера не указана дата рождения
+            }
             java.sql.Date userBirth = userModel.getBirthDate();
             int age = Period.between(userBirth.toLocalDate(), currentDate).getYears();
 

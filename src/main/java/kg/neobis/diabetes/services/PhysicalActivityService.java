@@ -25,20 +25,19 @@ public class PhysicalActivityService {
     @Value("${upload.path}")
     private String uploadPath;
 
+    @Value("${server-address}")
+    private String ip;
+
     @Autowired
     PhysicalActivityService(PhysicalActivityRepository repository){
         this.repository = repository;
     }
 
-    public PhysicalActivityModel create(String name, MultipartFile icon) {
-
-
-
-        String base64 = encodeFileToBase64(icon);
+    public PhysicalActivityModel create(String name, MultipartFile icon) throws IOException {
 
         PhysicalActivity activity = new PhysicalActivity();
         activity.setName(name);
-        activity.setIcon(base64);
+        activity.setImg_ur(uploadImage(icon));
         return convertToModel(repository.save(activity));
     }
 
@@ -59,7 +58,7 @@ public class PhysicalActivityService {
         PhysicalActivityModel model = new PhysicalActivityModel();
         model.setId(activity.getId());
         model.setName(activity.getName());
-        model.setIcon("data:image/png;base64," + activity.getIcon());
+        model.setIcon(ip + "/img/" + activity.getImg_ur());
         return model;
     }
 
@@ -72,15 +71,20 @@ public class PhysicalActivityService {
         }
     }
 
-    public PhysicalActivityModel update(Long id, String name, MultipartFile icon) throws RecordNotFoundException {
+    public PhysicalActivityModel update(Long id, String name, MultipartFile icon) throws RecordNotFoundException, IOException {
         Optional<PhysicalActivity> byId = repository.findById(id);
 
         if(byId.isEmpty())
             throw new RecordNotFoundException("нет физ активности с id " + id);
 
         PhysicalActivity activity = byId.get();
+        String oldFile = activity.getImg_ur();
         activity.setName(name);
-        activity.setIcon(encodeFileToBase64(icon));
+        activity.setImg_ur(uploadImage(icon));
+
+        File file = new File(uploadPath + File.separator + oldFile);
+        file.delete();
+
         return convertToModel(repository.save(activity));
 
 
@@ -93,14 +97,6 @@ public class PhysicalActivityService {
             throw new RecordNotFoundException("нет физ активности с id " + id);
 
         return ResponseEntity.ok(convertToModel(byId.get()));
-    }
-
-    public PhysicalActivity createTest(String name, MultipartFile icon) throws IOException {
-
-        PhysicalActivity activity = new PhysicalActivity();
-        activity.setName(name);
-        activity.setImg_ur(uploadImage(icon));
-        return repository.save(activity);
     }
 
 
@@ -126,15 +122,12 @@ public class PhysicalActivityService {
                 e.printStackTrace();
             }
 
-
-
-
         }
         throw new WrongDataException("файл без имени или пустой файл");
 
     }
 
-    public TestModel testGetByID(Long id) throws IOException {
+/*    public TestModel testGetByID(Long id) throws IOException {
         Optional<PhysicalActivity> byId = repository.findById(id);
 
         if(byId.isEmpty())
@@ -149,9 +142,5 @@ public class PhysicalActivityService {
         File file = new File(uploadPath + File.separator + activity.getImg_ur());
         model.setIcon(file);
         return model;
-
-
-
-
-    }
+    }*/
 }

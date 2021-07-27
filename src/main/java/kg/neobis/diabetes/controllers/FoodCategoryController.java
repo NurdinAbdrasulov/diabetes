@@ -1,8 +1,6 @@
 package kg.neobis.diabetes.controllers;
 
-import kg.neobis.diabetes.entity.FoodCategory;
 import kg.neobis.diabetes.exception.RecordNotFoundException;
-import kg.neobis.diabetes.exception.WrongDataException;
 import kg.neobis.diabetes.models.FoodCategoryModel;
 import kg.neobis.diabetes.models.MessageModel;
 import kg.neobis.diabetes.models.ModelToAddFoodCategory;

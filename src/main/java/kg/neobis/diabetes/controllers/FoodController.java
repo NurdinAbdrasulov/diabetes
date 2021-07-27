@@ -1,7 +1,9 @@
 package kg.neobis.diabetes.controllers;
 
+import com.fasterxml.jackson.datatype.jdk8.WrappedIOException;
 import javassist.NotFoundException;
 import kg.neobis.diabetes.exception.RecordNotFoundException;
+import kg.neobis.diabetes.exception.WrongDataException;
 import kg.neobis.diabetes.models.FoodModel;
 import kg.neobis.diabetes.models.MessageModel;
 import kg.neobis.diabetes.models.ModelToAddFood;
@@ -28,6 +30,15 @@ public class FoodController {
     @GetMapping
     public ResponseEntity<List<FoodModel>> getAll(){
         return ResponseEntity.ok(service.getAll());
+    }
+
+    @GetMapping("filter")
+    public ResponseEntity<?> getFiltered(@RequestParam(value = "category-id", required = false) Long categoryID, @RequestParam(value = "is-my-food", required = false, defaultValue = "false") Boolean isMyFood){
+        try {
+            return ResponseEntity.ok(service.getFiltered(categoryID, isMyFood));
+        } catch (WrongDataException | RecordNotFoundException e){
+            return new ResponseEntity<>(new MessageModel(e.getMessage()), e.getStatus());
+        }
     }
 
     @GetMapping("{id}")

@@ -1,12 +1,14 @@
 package kg.neobis.diabetes.services;
 
-import javassist.NotFoundException;
 import kg.neobis.diabetes.entity.Food;
 import kg.neobis.diabetes.entity.FoodCategory;
+import kg.neobis.diabetes.entity.User;
 import kg.neobis.diabetes.exception.RecordNotFoundException;
+import kg.neobis.diabetes.exception.WrongDataException;
 import kg.neobis.diabetes.models.FoodModel;
 import kg.neobis.diabetes.models.ModelToAddFood;
 import kg.neobis.diabetes.repositories.FoodRepository;
+import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,15 @@ import java.util.Optional;
 public class FoodService {
 
     private final FoodRepository repository;
+    private final MyUserServiceImpl userService;
 
     @Autowired
     private  FoodCategoryService foodCategoryService;
 
     @Autowired
-    FoodService(FoodRepository repository){
+    FoodService(FoodRepository repository, MyUserServiceImpl userService){
         this.repository = repository;
+        this.userService = userService;
     }
 
 
@@ -67,6 +71,12 @@ public class FoodService {
             model.setCategory(foodCategoryService.convertToModel(food.getCategory()));
         return model;
     }
+    private List<FoodModel> convertToFoodModel(List<Food> list){
+        List<FoodModel> resultList = new ArrayList<>();
+        for(Food food : list)
+            resultList.add(convertToFoodModel(food));
+        return resultList;
+    }
 
     public FoodModel update( Long id, ModelToAddFood model) throws RecordNotFoundException {
         Optional<Food> optionalFood = repository.findById(id);
@@ -107,6 +117,14 @@ public class FoodService {
 
     }
 
+    public Food getEntityById(Long id){
+        Optional<Food> byId = repository.findById(id);
+        if(byId.isEmpty())
+            throw new RecordNotFoundException("нет еды с id " + id);
+
+        return byId.get();
+    }
+
     // TO DO
     public Object delete(Long id) {
         Optional<Food> byId = repository.findById(id);
@@ -114,6 +132,24 @@ public class FoodService {
             throw new RecordNotFoundException("нет еды с id " + id);
 
         return ResponseEntity.ok("Типа удалено)");
+
+    }
+
+    public List<FoodModel> getFiltered(Long categoryID, Boolean isMyFood) throws WrongDataException, RecordNotFoundException{
+
+        if(isMyFood != null && isMyFood){
+            User user = userService.getCurrentUser();
+            List<Food> allByUser = repository.findAllByUser(user);
+            return convertToFoodModel(allByUser);
+        }
+
+        if(categoryID == null)
+            throw new WrongDataException("не указали id");
+
+        FoodCategory category = foodCategoryService.getRealCategory(categoryID);
+        List<Food> byCategory = repository.findAllByUserIsNullAndCategory(category);
+
+        return convertToFoodModel(byCategory);
 
     }
 }

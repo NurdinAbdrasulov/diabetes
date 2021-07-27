@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -23,4 +24,7 @@ public class UserFood {
 
     @ManyToOne
     private Food food;
+
+    @Column
+    private Date time;
 }

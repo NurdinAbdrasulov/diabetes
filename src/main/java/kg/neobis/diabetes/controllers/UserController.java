@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("users")
 @CrossOrigin
 public class UserController {
 
@@ -20,7 +20,7 @@ public class UserController {
 
 
 
-    @GetMapping("getAllUsers")
+    @GetMapping
     public Page<UserModel> getAllUsers(@RequestParam(defaultValue = "1") Integer pageNo,
                                        @RequestParam(defaultValue = "15") Integer pageSize,
                                        @RequestParam(defaultValue = "id") String sortBy){

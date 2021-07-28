@@ -70,4 +70,14 @@ public class WidgetService {
 
         return list;
     }
+
+    private static boolean isTime(String value){
+        return value.matches("^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$");
+    }
+
+    public static void checkTime(String value) throws WrongDataException{
+        if (!isTime(value))
+            throw new WrongDataException("время должно быть в формате HH:mm");
+    }
+
 }

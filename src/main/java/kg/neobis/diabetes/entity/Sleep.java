@@ -18,11 +18,14 @@ public class Sleep {
     private Long id;
 
     @Column(name = "start_time")
-    private Date startTime;
+    private String startTime;
 
     @Column(name = "end_time")
-    private Date endTime;
+    private String endTime;
 
     @ManyToOne
     private User user;
+
+    @Column(name = "created_date")
+    private Date createdDate;
 }

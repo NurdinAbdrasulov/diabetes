@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserFood {
+public class UserPhysicalActivity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -23,11 +23,14 @@ public class UserFood {
     private User user;
 
     @ManyToOne
-    private Food food;
+    private PhysicalActivity physicalActivity;
 
-    @Column
+    @Column(name = "duration")
+    private Long duration;
+
+    @Column(name = "time")
     private String time;
 
-    @Column(name = "createdDate")
+    @Column(name = "created_date")
     private Date createdDate;
 }

@@ -8,12 +8,12 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserFood {
+@NoArgsConstructor
+@Entity
+public class Sugar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,12 +22,13 @@ public class UserFood {
     @ManyToOne
     private User user;
 
-    @ManyToOne
-    private Food food;
+    @Column(name = "value")
+    private Double value;
 
-    @Column
+    @Column(length = 10)
     private String time;
 
-    @Column(name = "createdDate")
+    @Column(name = "created_date")
     private Date createdDate;
+
 }

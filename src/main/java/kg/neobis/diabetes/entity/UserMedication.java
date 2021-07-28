@@ -21,9 +21,6 @@ public class UserMedication {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
     @ManyToOne
     private User user;
 
@@ -34,5 +31,8 @@ public class UserMedication {
     private Double value; // мл
 
     @Column
-    private Date time;
+    private String time;
+
+    @Column(name = "created_date")
+    private Date createdDate;
 }

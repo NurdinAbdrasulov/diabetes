@@ -27,7 +27,4 @@ public class FoodWidgetController {
         return service.track(model);
     }
 
-
-
-
 }

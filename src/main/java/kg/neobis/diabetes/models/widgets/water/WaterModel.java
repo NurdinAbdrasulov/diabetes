@@ -1,4 +1,4 @@
-package kg.neobis.diabetes.models.widgets.food;
+package kg.neobis.diabetes.models.widgets.water;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,9 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrackingFoodModel {
+public class WaterModel {
+
     private String time;
-    private Long[] foodIds;
+    private Double value;
+    private Date createdDate;
 }

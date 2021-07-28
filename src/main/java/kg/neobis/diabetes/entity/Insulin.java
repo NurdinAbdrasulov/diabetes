@@ -1,5 +1,6 @@
 package kg.neobis.diabetes.entity;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,8 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhysicalActivityUser {
+public class Insulin {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,12 +24,12 @@ public class PhysicalActivityUser {
     @ManyToOne
     private User user;
 
-    @ManyToOne
-    private PhysicalActivity physicalActivity;
+    @Column(name = "value")
+    private Double value;
 
-    @Column(name = "duration")
-    private Long duration;
+    @Column(length = 10)
+    private String time;
 
-    @Column(name = "time")
-    private Date time;
+    @Column(name = "created_date")
+    private Date createdDate;
 }

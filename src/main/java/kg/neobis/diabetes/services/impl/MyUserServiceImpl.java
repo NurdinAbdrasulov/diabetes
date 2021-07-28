@@ -1,19 +1,13 @@
 package kg.neobis.diabetes.services.impl;
 
 import kg.neobis.diabetes.entity.User;
-import kg.neobis.diabetes.entity.UserWidgets;
-import kg.neobis.diabetes.entity.enums.Widgets;
 import kg.neobis.diabetes.exception.WrongDataException;
 import kg.neobis.diabetes.models.ModelToChangePassword;
 import kg.neobis.diabetes.models.UserModel;
-import kg.neobis.diabetes.models.UsersWidgetsModel;
-import kg.neobis.diabetes.models.WidgetModel;
 import kg.neobis.diabetes.models.security.MyUserDetails;
 import kg.neobis.diabetes.repositories.UserPaginationRepository;
 import kg.neobis.diabetes.repositories.UserRepository;
-import kg.neobis.diabetes.services.NormalUserPropertiesService;
 import kg.neobis.diabetes.services.RegistrationService;
-import kg.neobis.diabetes.services.WidgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
@@ -25,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class MyUserServiceImpl implements UserDetailsService {
@@ -62,21 +55,9 @@ public class MyUserServiceImpl implements UserDetailsService {
         return getByEmail(userEmail);
     }
 
-//    public UserModel retrieveCurrentUser() {
-//        User user = getCurrentUser();
-//        UserModel model = new UserModel();
-//        model.setId(user.getPerson().getId());
-//        model.setSurname(user.getPerson().getSurname());
-//        model.setName(user.getPerson().getName());
-//        model.setEmail(user.getEmail());
-//        model.setPhoneNumber(user.getPerson().getPhoneNumber());
-//        model.setRole(user.getRole());
-//        model.setGroups(getGroupModels(user.getPerson().getGroupOfPeople()));
-//        model.setUserStatus(user.getUserStatus());
-//        model.setResetToken(user.getResetToken());
-//
-//        return model;
-//    }
+    public UserModel getCurrentUserModel() {
+        return convertToModel(getCurrentUser());
+    }
 
     public void setNewPassword(ModelToChangePassword model) throws WrongDataException {
         User user = getCurrentUser();

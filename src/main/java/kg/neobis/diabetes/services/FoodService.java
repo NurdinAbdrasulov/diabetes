@@ -7,6 +7,7 @@ import kg.neobis.diabetes.exception.RecordNotFoundException;
 import kg.neobis.diabetes.exception.WrongDataException;
 import kg.neobis.diabetes.models.FoodModel;
 import kg.neobis.diabetes.models.ModelToAddFood;
+import kg.neobis.diabetes.models.ModelToAddFoodByUser;
 import kg.neobis.diabetes.repositories.FoodRepository;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,18 @@ public class FoodService {
         food.setCalories(model.getCalories());///////////
         FoodCategory category = foodCategoryService.getRealCategory(model.getCategoryId());
         food.setCategory(category);
+
+        return convertToFoodModel(repository.save(food));
+    }
+
+    public FoodModel add(ModelToAddFoodByUser model) throws RecordNotFoundException{
+        Food food = new Food();
+        food.setName(model.getName());
+        food.setProteins(model.getProteins());
+        food.setFats(model.getFats());
+        food.setCarbohydrates(model.getCarbohydrates());
+        food.setCalories(model.getCalories());///////////
+        food.setUser(userService.getCurrentUser());
 
         return convertToFoodModel(repository.save(food));
     }

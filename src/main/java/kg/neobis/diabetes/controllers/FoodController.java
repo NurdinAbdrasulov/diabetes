@@ -7,6 +7,7 @@ import kg.neobis.diabetes.exception.WrongDataException;
 import kg.neobis.diabetes.models.FoodModel;
 import kg.neobis.diabetes.models.MessageModel;
 import kg.neobis.diabetes.models.ModelToAddFood;
+import kg.neobis.diabetes.models.ModelToAddFoodByUser;
 import kg.neobis.diabetes.services.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,6 +63,17 @@ public class FoodController {
     // добавить валидации: продукт уже сущ, пустыне поля и тд
     @PostMapping
     public ResponseEntity<?> add(@RequestBody ModelToAddFood model){
+        try {
+            return ResponseEntity.ok(service.add(model));
+        } catch (RecordNotFoundException e){
+            return new ResponseEntity<>(new MessageModel(e.getMessage()), e.getStatus());
+        }
+    }
+
+    //add by app user
+    // добавить валидации: продукт уже сущ, пустыне поля и тд
+    @PostMapping("app")
+    public ResponseEntity<?> addByUser(@RequestBody ModelToAddFoodByUser model){
         try {
             return ResponseEntity.ok(service.add(model));
         } catch (RecordNotFoundException e){

@@ -26,7 +26,7 @@ public class UserPhysicalActivity {
     private PhysicalActivity physicalActivity;
 
     @Column(name = "duration")
-    private Long duration;
+    private Double duration;
 
     @Column(name = "time")
     private String time;

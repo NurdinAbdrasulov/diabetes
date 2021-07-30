@@ -12,8 +12,12 @@ import kg.neobis.diabetes.repositories.NormalUserPressureRepository;
 import kg.neobis.diabetes.repositories.NormalUserSleepRepository;
 import kg.neobis.diabetes.repositories.NormalUserSugarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -70,4 +74,24 @@ public class NormalUserPropertiesService {
         sugar.setValue(model.getValue());
         sugarRepository.save(sugar);
     }
+    public Double getNormalSugarValue(User user){
+        Optional<NormalUserSugar> byUser = sugarRepository.findByUser(user);
+        if(byUser.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"у пользователя не указана норма сахара");
+
+        return byUser.get().getValue();
+    }
+
+    public Map<String, Double> getNormalPressureValue(User user){
+        Optional<NormalUserPressure> byUser = pressureRepository.findByUser(user);
+        if(byUser.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"у пользователя не указана норма давления");
+
+        NormalUserPressure pressure = byUser.get();
+        Map<String, Double> map = new HashMap<>();
+        map.put("Systolic", pressure.getSystolic());
+        map.put("Diastolic", pressure.getDiastolic());
+        return map;
+    }
+
 }

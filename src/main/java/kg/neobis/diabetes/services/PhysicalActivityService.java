@@ -5,13 +5,14 @@ import kg.neobis.diabetes.entity.PhysicalActivity;
 import kg.neobis.diabetes.exception.RecordNotFoundException;
 import kg.neobis.diabetes.exception.WrongDataException;
 import kg.neobis.diabetes.models.PhysicalActivityModel;
-import kg.neobis.diabetes.models.TestModel;
 import kg.neobis.diabetes.repositories.PhysicalActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class PhysicalActivityService {
     }
 
 
-    private PhysicalActivityModel convertToModel(PhysicalActivity activity){
+    public PhysicalActivityModel convertToModel(PhysicalActivity activity){
         PhysicalActivityModel model = new PhysicalActivityModel();
         model.setId(activity.getId());
         model.setName(activity.getName());
@@ -94,7 +95,7 @@ public class PhysicalActivityService {
         Optional<PhysicalActivity> byId = repository.findById(id);
 
         if(byId.isEmpty())
-            throw new RecordNotFoundException("нет физ активности с id " + id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"нет физ активности с id " + id);
 
         return ResponseEntity.ok(convertToModel(byId.get()));
     }
@@ -125,6 +126,15 @@ public class PhysicalActivityService {
         }
         throw new WrongDataException("файл без имени или пустой файл");
 
+    }
+
+    public PhysicalActivity getEntityById(Long activityId) {
+        Optional<PhysicalActivity> byId = repository.findById(activityId);
+
+        if(byId.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"нет физ активности с id " + activityId);
+
+        return byId.get();
     }
 
 /*    public TestModel testGetByID(Long id) throws IOException {

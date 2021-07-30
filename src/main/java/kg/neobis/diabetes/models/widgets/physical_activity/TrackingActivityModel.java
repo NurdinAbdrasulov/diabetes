@@ -1,4 +1,4 @@
-package kg.neobis.diabetes.models.widgets.medication;
+package kg.neobis.diabetes.models.widgets.physical_activity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrackingMedicationModel {
-    private Long medicationId;
+public class TrackingActivityModel {
+    private Long activityId;
     private String time;
-    private Double value;
-
+    private Double duration;
 }

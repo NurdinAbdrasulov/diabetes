@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class FoodService {
@@ -84,7 +85,14 @@ public class FoodService {
             model.setCategory(foodCategoryService.convertToModel(food.getCategory()));
         return model;
     }
-    private List<FoodModel> convertToFoodModel(List<Food> list){
+    public List<FoodModel> convertToFoodModel(List<Food> list){
+        List<FoodModel> resultList = new ArrayList<>();
+        for(Food food : list)
+            resultList.add(convertToFoodModel(food));
+        return resultList;
+    }
+
+    public List<FoodModel> convertToFoodModel(Set<Food> list){
         List<FoodModel> resultList = new ArrayList<>();
         for(Food food : list)
             resultList.add(convertToFoodModel(food));

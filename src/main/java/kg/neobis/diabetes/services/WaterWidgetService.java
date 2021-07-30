@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class WaterWidgetService {
@@ -23,7 +25,7 @@ public class WaterWidgetService {
         this.userService = userService;
     }
 
-    public ResponseEntity<WaterModel> track(TrackingWaterModel model) throws WrongDataException {
+    public ResponseEntity<WaterModel> track(TrackingWaterModel model){
 
         WidgetService.checkTime(model.getTime());
 
@@ -39,5 +41,18 @@ public class WaterWidgetService {
 
     private WaterModel convertToModel(Water water){
         return new WaterModel(water.getTime(), water.getValue(), water.getCreatedDate());
+    }
+
+    private List<WaterModel> convertToModel(List<Water> waterList){
+        List<WaterModel> list = new ArrayList<>();
+
+        for(Water water : waterList)
+            list.add(convertToModel(water));
+
+        return list;
+    }
+
+    public ResponseEntity<?> getHistory() {
+        return ResponseEntity.ok(convertToModel(repository.findAll()));
     }
 }

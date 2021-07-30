@@ -6,10 +6,13 @@ import kg.neobis.diabetes.models.ModelToAddMedications;
 import kg.neobis.diabetes.repositories.MedicationRepository;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MedicationService {
@@ -46,5 +49,19 @@ public class MedicationService {
 
     public MedicationModel convertToModel(Medication medication){
         return new MedicationModel(medication.getId(), medication.getName(), medication.getUser().getId());
+    }
+
+    public List<MedicationModel> getAll() {
+        List<Medication> all = repository.findAll();
+        return convertToModel(all);
+    }
+
+    public Medication getEntityById(Long medicationId) {
+        Optional<Medication> byId = repository.findById(medicationId);
+
+        if(byId.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "нет медикомента с id " + medicationId);
+
+        return byId.get();
     }
 }

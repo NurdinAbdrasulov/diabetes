@@ -9,7 +9,9 @@ import kg.neobis.diabetes.models.WidgetModel;
 import kg.neobis.diabetes.repositories.WidgetRepository;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -77,7 +79,7 @@ public class WidgetService {
 
     public static void checkTime(String value) throws WrongDataException{
         if (!isTime(value))
-            throw new WrongDataException("время должно быть в формате HH:mm");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"время должно быть в формате HH:mm");
     }
 
 }

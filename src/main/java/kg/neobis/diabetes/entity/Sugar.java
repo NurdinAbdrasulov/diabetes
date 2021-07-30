@@ -31,4 +31,7 @@ public class Sugar {
     @Column(name = "created_date")
     private Date createdDate;
 
+    @Column
+    private Boolean isNormal;
+
 }

@@ -7,13 +7,14 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserFood {
+public class UserFoodJournal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,12 +23,17 @@ public class UserFood {
     @ManyToOne
     private User user;
 
-    @ManyToOne
-    private Food food;
-
     @Column
     private String time;
 
     @Column(name = "createdDate")
     private Date createdDate;
+
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "userFoodJournal_Food",
+            joinColumns = { @JoinColumn(name = "journal_id") },
+            inverseJoinColumns = { @JoinColumn(name = "food_id") }
+    )
+    private Set<Food> food;
 }

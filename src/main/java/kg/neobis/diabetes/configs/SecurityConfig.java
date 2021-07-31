@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .authorizeRequests()
                     .antMatchers("/restorePassword/*", "/login", "/registration/step1", "/registration/step2", "/registration/getGenders",
-                            "/registration/getDiabetesStatuses", "/img/*").permitAll()
+                            "/registration/getDiabetesStatuses", "/img/*", "/documents/user-agreement").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .logout()

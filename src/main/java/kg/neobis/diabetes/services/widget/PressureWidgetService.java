@@ -1,9 +1,11 @@
-package kg.neobis.diabetes.services;
+package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.Pressure;
 import kg.neobis.diabetes.models.widgets.pressure.PressureJournalModel;
 import kg.neobis.diabetes.models.widgets.pressure.TrackingPressureModel;
 import kg.neobis.diabetes.repositories.PressureRepository;
+import kg.neobis.diabetes.services.NormalUserPropertiesService;
+import kg.neobis.diabetes.services.WidgetService;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +60,6 @@ public class PressureWidgetService {
     }
 
     public ResponseEntity<?> getHistory() {
-        return ResponseEntity.ok(convertToModel(repository.findAll()));
-
+        return ResponseEntity.ok(convertToModel(repository.findAllByUser(userService.getCurrentUser())));
     }
 }

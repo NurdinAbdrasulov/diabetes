@@ -1,7 +1,7 @@
 package kg.neobis.diabetes.controllers.widget;
 
 import kg.neobis.diabetes.models.widgets.sleep.TrackingSleepModel;
-import kg.neobis.diabetes.services.SleepWidgetService;
+import kg.neobis.diabetes.services.widget.SleepWidgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

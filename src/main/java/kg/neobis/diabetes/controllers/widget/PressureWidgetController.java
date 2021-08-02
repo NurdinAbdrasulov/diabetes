@@ -2,7 +2,7 @@ package kg.neobis.diabetes.controllers.widget;
 
 import kg.neobis.diabetes.models.widgets.pressure.PressureJournalModel;
 import kg.neobis.diabetes.models.widgets.pressure.TrackingPressureModel;
-import kg.neobis.diabetes.services.PressureWidgetService;
+import kg.neobis.diabetes.services.widget.PressureWidgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

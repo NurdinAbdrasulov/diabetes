@@ -3,7 +3,7 @@ package kg.neobis.diabetes.controllers.widget;
 
 import kg.neobis.diabetes.models.widgets.sugar.SugarJournalModel;
 import kg.neobis.diabetes.models.widgets.sugar.TrackingSugarModel;
-import kg.neobis.diabetes.services.SugarWidgetService;
+import kg.neobis.diabetes.services.widget.SugarWidgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

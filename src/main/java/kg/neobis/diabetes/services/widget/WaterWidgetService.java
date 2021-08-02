@@ -1,10 +1,11 @@
-package kg.neobis.diabetes.services;
+package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.Water;
 import kg.neobis.diabetes.exception.WrongDataException;
 import kg.neobis.diabetes.models.widgets.water.TrackingWaterModel;
 import kg.neobis.diabetes.models.widgets.water.WaterModel;
 import kg.neobis.diabetes.repositories.WaterRepository;
+import kg.neobis.diabetes.services.WidgetService;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +54,6 @@ public class WaterWidgetService {
     }
 
     public ResponseEntity<?> getHistory() {
-        return ResponseEntity.ok(convertToModel(repository.findAll()));
+        return ResponseEntity.ok(convertToModel(repository.findAllByUser(userService.getCurrentUser())));
     }
 }

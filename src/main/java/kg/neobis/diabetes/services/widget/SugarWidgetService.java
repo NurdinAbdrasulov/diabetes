@@ -1,9 +1,11 @@
-package kg.neobis.diabetes.services;
+package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.Sugar;
 import kg.neobis.diabetes.models.widgets.sugar.SugarJournalModel;
 import kg.neobis.diabetes.models.widgets.sugar.TrackingSugarModel;
 import kg.neobis.diabetes.repositories.SugarRepository;
+import kg.neobis.diabetes.services.NormalUserPropertiesService;
+import kg.neobis.diabetes.services.WidgetService;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +57,6 @@ public class SugarWidgetService {
 
 
     public ResponseEntity<List<SugarJournalModel>> getHistory() {
-        return  ResponseEntity.ok(convertToModel(repository.findAll()));
+        return  ResponseEntity.ok(convertToModel(repository.findAllByUser(userService.getCurrentUser())));
     }
 }

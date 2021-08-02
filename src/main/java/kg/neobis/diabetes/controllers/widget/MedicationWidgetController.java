@@ -1,7 +1,7 @@
 package kg.neobis.diabetes.controllers.widget;
 
 import kg.neobis.diabetes.models.widgets.medication.TrackingMedicationModel;
-import kg.neobis.diabetes.services.MedicationWidgetService;
+import kg.neobis.diabetes.services.widget.MedicationWidgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +24,6 @@ public class MedicationWidgetController {
 
     @GetMapping("history")
     public ResponseEntity<?> getHistory(){
-        return service.getAll();
+        return service.getHistory();
     }
 }

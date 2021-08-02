@@ -1,9 +1,11 @@
-package kg.neobis.diabetes.services;
+package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.UserMedication;
 import kg.neobis.diabetes.models.widgets.medication.MedicationJournalModel;
 import kg.neobis.diabetes.models.widgets.medication.TrackingMedicationModel;
 import kg.neobis.diabetes.repositories.UserMedicationRepository;
+import kg.neobis.diabetes.services.MedicationService;
+import kg.neobis.diabetes.services.WidgetService;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,11 @@ public class MedicationWidgetService {
 
     public ResponseEntity<?> getAll() {
         List<UserMedication> all = repository.findAll();
+        return ResponseEntity.ok(convertToModel(all));
+    }
+
+    public ResponseEntity<?> getHistory() {
+        List<UserMedication> all = repository.findAllByUser(userService.getCurrentUser());
         return ResponseEntity.ok(convertToModel(all));
     }
 }

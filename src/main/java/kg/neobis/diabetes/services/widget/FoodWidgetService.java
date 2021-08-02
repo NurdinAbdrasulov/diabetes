@@ -1,10 +1,12 @@
-package kg.neobis.diabetes.services;
+package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.Food;
 import kg.neobis.diabetes.entity.UserFoodJournal;
 import kg.neobis.diabetes.models.widgets.food.FoodJournalModel;
 import kg.neobis.diabetes.models.widgets.food.TrackingFoodModel;
 import kg.neobis.diabetes.repositories.UserFoodRepository;
+import kg.neobis.diabetes.services.FoodService;
+import kg.neobis.diabetes.services.WidgetService;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +67,11 @@ public class FoodWidgetService {
 
     public ResponseEntity<?> getAll() {
         List<UserFoodJournal> all = repository.findAll();
+        return ResponseEntity.ok(convertToModel(all));
+    }
+
+    public ResponseEntity<?> getHistory() {
+        List<UserFoodJournal> all = repository.findAllByUser(userService.getCurrentUser());
         return ResponseEntity.ok(convertToModel(all));
     }
 }

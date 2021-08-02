@@ -1,7 +1,6 @@
 package kg.neobis.diabetes.controllers;
 
-import kg.neobis.diabetes.models.UsersWidgetsModel;
-import kg.neobis.diabetes.models.WidgetModel;
+import kg.neobis.diabetes.models.*;
 import kg.neobis.diabetes.services.NormalUserPropertiesService;
 import kg.neobis.diabetes.services.WidgetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,21 @@ public class WidgetsController {
     @PostMapping("set-widgets")
     public ResponseEntity<List<WidgetModel>> setUserWidgets(@RequestBody UsersWidgetsModel model){
         return ResponseEntity.ok(service.setWidgets(model));
+    }
+
+    @PostMapping("set-normal-pressure")
+    public ResponseEntity<?> setNormalPressure(@RequestBody ModelToAddNormalUserPressure model){
+        return service.setNormalPressure(model);
+    }
+
+    @PostMapping("set-normal-sleep")
+    public ResponseEntity<?> setNormalSleep(@RequestBody ModelToAddNormalUserSleep model){
+        return ResponseEntity.ok(service.setNormalSleep(model));
+    }
+
+    @PostMapping("set-normal-sugar")
+    public ResponseEntity<?> setNormalSugar(@RequestBody ModelToAddNormalUserSugar model){
+        return ResponseEntity.ok(service.setNormalSugar(model));
     }
 
 

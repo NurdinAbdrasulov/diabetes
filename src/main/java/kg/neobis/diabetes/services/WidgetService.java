@@ -4,12 +4,12 @@ import kg.neobis.diabetes.entity.User;
 import kg.neobis.diabetes.entity.UserWidgets;
 import kg.neobis.diabetes.entity.enums.Widgets;
 import kg.neobis.diabetes.exception.WrongDataException;
-import kg.neobis.diabetes.models.UsersWidgetsModel;
-import kg.neobis.diabetes.models.WidgetModel;
+import kg.neobis.diabetes.models.*;
 import kg.neobis.diabetes.repositories.WidgetRepository;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -50,14 +50,14 @@ public class WidgetService {
     public List<WidgetModel> setWidgets(UsersWidgetsModel model) {
         User currentUser = userService.getCurrentUser();
 
-        if(model.getUserSleep() != null)
-            normalService.setSleep(model.getUserSleep(), currentUser);
-
-        if(model.getUserPressure() != null)
-            normalService.setPressure(model.getUserPressure(), currentUser);
-
-        if(model.getUserSugar() != null)
-            normalService.setSugar(model.getUserSugar(), currentUser);
+//        if(model.getUserSleep() != null)
+//            normalService.setSleep(model.getUserSleep(), currentUser);
+//
+//        if(model.getUserPressure() != null)
+//            normalService.setPressure(model.getUserPressure(), currentUser);
+//
+//        if(model.getUserSugar() != null)
+//            normalService.setSugar(model.getUserSugar(), currentUser);
 
         Optional<UserWidgets> byUser = repository.findByUser(currentUser);
         UserWidgets userWidgets = byUser.orElseGet(UserWidgets::new);
@@ -82,4 +82,20 @@ public class WidgetService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"время должно быть в формате HH:mm");
     }
 
+    public ResponseEntity<?> setNormalPressure(ModelToAddNormalUserPressure model) {
+        User currentUser = userService.getCurrentUser();
+
+        normalService.setPressure(model, currentUser);
+        return ResponseEntity.ok(new MessageModel("added!"));
+    }
+
+    public MessageModel setNormalSleep(ModelToAddNormalUserSleep model) {
+        normalService.setSleep(model, userService.getCurrentUser());
+        return new MessageModel("added!");
+    }
+
+    public MessageModel setNormalSugar(ModelToAddNormalUserSugar model) {
+        normalService.setSugar(model, userService.getCurrentUser());
+        return new MessageModel("added!");
+    }
 }

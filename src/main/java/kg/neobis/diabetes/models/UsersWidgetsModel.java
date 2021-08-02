@@ -11,7 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class UsersWidgetsModel {
     private Set<Long> widgetIds;
-    private ModelToAddNormalUserPressure userPressure;
-    private ModelToAddNormalUserSleep userSleep;
-    private ModelToAddNormalUserSugar userSugar;
+//    private ModelToAddNormalUserPressure userPressure;
+//    private ModelToAddNormalUserSleep userSleep;
+//    private ModelToAddNormalUserSugar userSugar;
 }

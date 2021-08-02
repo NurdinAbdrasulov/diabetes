@@ -1,6 +1,7 @@
 package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.Pressure;
+import kg.neobis.diabetes.models.main_page.PressureMainPageModel;
 import kg.neobis.diabetes.models.widgets.pressure.PressureJournalModel;
 import kg.neobis.diabetes.models.widgets.pressure.TrackingPressureModel;
 import kg.neobis.diabetes.repositories.PressureRepository;
@@ -61,5 +62,10 @@ public class PressureWidgetService {
 
     public ResponseEntity<?> getHistory() {
         return ResponseEntity.ok(convertToModel(repository.findAllByUser(userService.getCurrentUser())));
+    }
+
+    public PressureMainPageModel getForMainPage() {
+
+        return null;
     }
 }

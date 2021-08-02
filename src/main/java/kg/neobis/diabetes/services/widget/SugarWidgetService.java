@@ -1,6 +1,7 @@
 package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.Sugar;
+import kg.neobis.diabetes.models.main_page.SugarMainPageModel;
 import kg.neobis.diabetes.models.widgets.sugar.SugarJournalModel;
 import kg.neobis.diabetes.models.widgets.sugar.TrackingSugarModel;
 import kg.neobis.diabetes.repositories.SugarRepository;
@@ -58,5 +59,10 @@ public class SugarWidgetService {
 
     public ResponseEntity<List<SugarJournalModel>> getHistory() {
         return  ResponseEntity.ok(convertToModel(repository.findAllByUser(userService.getCurrentUser())));
+    }
+
+    public SugarMainPageModel getForMainPage() {
+
+        return null;
     }
 }

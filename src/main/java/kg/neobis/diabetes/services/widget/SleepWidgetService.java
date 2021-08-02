@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class SleepWidgetService {
@@ -62,8 +63,17 @@ public class SleepWidgetService {
 
     public SleepMainPageModel getInfoForMainPage(){
 
-//        repository.findByCreatedDate();
-        return null;
+        Optional<Sleep> optionalSleep = repository.findFirstByOrderByCreatedDateDesc();
+        if(optionalSleep.isEmpty())
+            return null;
+
+        Sleep sleep = optionalSleep.get();
+        SleepMainPageModel sleepMainPageModel = new SleepMainPageModel();
+        sleepMainPageModel.setEndTime(sleep.getEndTime());
+        sleepMainPageModel.setStartTime(sleep.getStartTime());
+        sleepMainPageModel.setDuration(getHourMinuter(sleep.getStartTime(), sleep.getEndTime()));
+
+        return sleepMainPageModel;
     }
 
 
@@ -82,7 +92,7 @@ public class SleepWidgetService {
         int hour = endHour > startHour ? endHour - startHour : 24 - startHour + endHour;// что если пользователь уснул и проснулся в тот же час
 
         int minute = endMinutes > startMinutes ? endMinutes - startMinutes : 60 - startMinutes + endMinutes;
-
+        if(minute == 60) minute = 0;
         if(endMinutes < startMinutes)
             hour--;
 

@@ -2,6 +2,7 @@ package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.Water;
 import kg.neobis.diabetes.exception.WrongDataException;
+import kg.neobis.diabetes.models.main_page.WaterMainPageModel;
 import kg.neobis.diabetes.models.widgets.water.TrackingWaterModel;
 import kg.neobis.diabetes.models.widgets.water.WaterModel;
 import kg.neobis.diabetes.repositories.WaterRepository;
@@ -55,5 +56,10 @@ public class WaterWidgetService {
 
     public ResponseEntity<?> getHistory() {
         return ResponseEntity.ok(convertToModel(repository.findAllByUser(userService.getCurrentUser())));
+    }
+
+    public WaterMainPageModel getForMainPage() {
+
+        return null;
     }
 }

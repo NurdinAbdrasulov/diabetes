@@ -2,6 +2,7 @@ package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.Food;
 import kg.neobis.diabetes.entity.UserFoodJournal;
+import kg.neobis.diabetes.models.main_page.FoodMainPageModel;
 import kg.neobis.diabetes.models.widgets.food.FoodJournalModel;
 import kg.neobis.diabetes.models.widgets.food.TrackingFoodModel;
 import kg.neobis.diabetes.repositories.UserFoodRepository;
@@ -73,5 +74,10 @@ public class FoodWidgetService {
     public ResponseEntity<?> getHistory() {
         List<UserFoodJournal> all = repository.findAllByUser(userService.getCurrentUser());
         return ResponseEntity.ok(convertToModel(all));
+    }
+
+    public FoodMainPageModel getForMainPage() {
+
+        return null;
     }
 }

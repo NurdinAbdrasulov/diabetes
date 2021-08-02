@@ -1,6 +1,7 @@
 package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.UserMedication;
+import kg.neobis.diabetes.models.main_page.MedicationMainPageModel;
 import kg.neobis.diabetes.models.widgets.medication.MedicationJournalModel;
 import kg.neobis.diabetes.models.widgets.medication.TrackingMedicationModel;
 import kg.neobis.diabetes.repositories.UserMedicationRepository;
@@ -64,5 +65,9 @@ public class MedicationWidgetService {
     public ResponseEntity<?> getHistory() {
         List<UserMedication> all = repository.findAllByUser(userService.getCurrentUser());
         return ResponseEntity.ok(convertToModel(all));
+    }
+
+    public MedicationMainPageModel getForMainPage() {
+        return null;
     }
 }

@@ -4,8 +4,7 @@ import lombok.Data;
 
 @Data
 public class SleepMainPageModel {
-    private Integer hour;
-    private Integer minutes;
+    private String duration;
     private String startTime;
     private String endTime;
 }

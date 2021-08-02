@@ -1,10 +1,13 @@
-package kg.neobis.diabetes.services;
+package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.PhysicalActivity;
 import kg.neobis.diabetes.entity.UserPhysicalActivity;
+import kg.neobis.diabetes.models.main_page.ActivityMainPageModel;
 import kg.neobis.diabetes.models.widgets.physical_activity.ActivityJournalModel;
 import kg.neobis.diabetes.models.widgets.physical_activity.TrackingActivityModel;
 import kg.neobis.diabetes.repositories.UserPhysicalActivityRepository;
+import kg.neobis.diabetes.services.PhysicalActivityService;
+import kg.neobis.diabetes.services.WidgetService;
 import kg.neobis.diabetes.services.impl.MyUserServiceImpl;
 
 import java.util.ArrayList;
@@ -63,6 +66,10 @@ public class PhysicalActivityWidgetService {
         return ResponseEntity.ok(convertToModel(repository.findAll()));
     }
 
+    public ActivityMainPageModel getForMainPage() {
+
+        return null;
+    }
 }
 
 

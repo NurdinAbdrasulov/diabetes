@@ -1,6 +1,7 @@
 package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.Insulin;
+import kg.neobis.diabetes.models.main_page.InsulinMainPageModel;
 import kg.neobis.diabetes.models.widgets.insulin.InsulinJournalModel;
 import kg.neobis.diabetes.models.widgets.insulin.TrackingInsulinModel;
 import kg.neobis.diabetes.repositories.InsulinRepository;
@@ -53,5 +54,10 @@ public class InsulinWidgetService {
     public ResponseEntity<List<InsulinJournalModel>> getHistory(){
         List<Insulin> all = repository.findAllByUser(userService.getCurrentUser());
         return ResponseEntity.ok(convertToModel(all));
+    }
+
+    public InsulinMainPageModel getForMainPage() {
+
+        return  null;
     }
 }

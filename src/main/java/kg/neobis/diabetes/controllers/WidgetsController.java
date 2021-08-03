@@ -27,6 +27,11 @@ public class WidgetsController {
         return ResponseEntity.ok(service.getAllWidgets());
     }
 
+    @GetMapping("current")
+    public ResponseEntity<?> getWidgetsOfCurrentUser(){
+        return ResponseEntity.ok(service.getWidgetsOfCurrentUser());
+    }
+
 
     @PostMapping("set-widgets")
     public ResponseEntity<List<WidgetModel>> setUserWidgets(@RequestBody UsersWidgetsModel model){

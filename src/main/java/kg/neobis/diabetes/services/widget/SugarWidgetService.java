@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SugarWidgetService {
@@ -62,7 +63,19 @@ public class SugarWidgetService {
     }
 
     public SugarMainPageModel getForMainPage() {
+        Optional<Sugar> optionalSugar = repository.findFirstByUserOrderByCreatedDateDesc(userService.getCurrentUser());
+        if(optionalSugar.isEmpty())
+            return null;
 
-        return null;
+        Sugar sugar = optionalSugar.get();
+
+//        if(!WidgetService.isToday(sugar.getCreatedDate()))
+//            return null;
+
+        SugarMainPageModel model = new SugarMainPageModel();
+        model.setValue(sugar.getValue());
+        model.setTrackedDate(sugar.getCreatedDate());
+
+        return model;
     }
 }

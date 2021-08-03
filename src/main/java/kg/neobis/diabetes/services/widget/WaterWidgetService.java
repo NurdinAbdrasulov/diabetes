@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -60,6 +61,23 @@ public class WaterWidgetService {
 
     public WaterMainPageModel getForMainPage() {
 
-        return null;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date time = calendar.getTime();
+
+        List<Water> list = repository.findAllByCreatedDateAfter(time);
+        if(list.isEmpty())
+            return null;
+
+        Double sum = 0d;////////////////////////////////////////////////////dangerous
+        for(Water water: list)
+            sum+= water.getValue();
+
+        WaterMainPageModel model = new WaterMainPageModel();
+        model.setValue(sum);
+
+        return model;
     }
 }

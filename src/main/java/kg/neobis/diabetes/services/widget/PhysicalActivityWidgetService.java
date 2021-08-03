@@ -68,6 +68,7 @@ public class PhysicalActivityWidgetService {
 
     public ActivityMainPageModel getForMainPage() {
 
+
         return null;
     }
 }

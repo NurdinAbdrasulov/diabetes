@@ -12,5 +12,6 @@ import java.util.Optional;
 @Repository
 public interface SleepRepository extends JpaRepository<Sleep, Long> {
     List<Sleep> findAllByUser(User user);
-    Optional<Sleep> findFirstByOrderByCreatedDateDesc();
+//    Optional<Sleep> findFirstByOrderByCreatedDateDesc();
+    Optional<Sleep> findFirstByUserOrderByCreatedDateDesc(User user);
 }

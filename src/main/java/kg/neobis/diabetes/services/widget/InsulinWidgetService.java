@@ -1,7 +1,9 @@
 package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.Insulin;
+import kg.neobis.diabetes.entity.Sugar;
 import kg.neobis.diabetes.models.main_page.InsulinMainPageModel;
+import kg.neobis.diabetes.models.main_page.SugarMainPageModel;
 import kg.neobis.diabetes.models.widgets.insulin.InsulinJournalModel;
 import kg.neobis.diabetes.models.widgets.insulin.TrackingInsulinModel;
 import kg.neobis.diabetes.repositories.InsulinRepository;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InsulinWidgetService {
@@ -57,7 +60,19 @@ public class InsulinWidgetService {
     }
 
     public InsulinMainPageModel getForMainPage() {
+        Optional<Insulin> optionalInsulin = repository.findFirstByUserOrderByCreatedDateDesc(userService.getCurrentUser());
+        if(optionalInsulin.isEmpty())
+        return null;
 
-        return  null;
+        Insulin insulin = optionalInsulin.get();
+
+//        if(!WidgetService.isToday(insulin.getCreatedDate()))
+//            return null;
+
+        InsulinMainPageModel model = new InsulinMainPageModel();
+        model.setValue(insulin.getValue());
+        model.setTrackedTime(insulin.getCreatedDate());
+
+        return  model;
     }
 }

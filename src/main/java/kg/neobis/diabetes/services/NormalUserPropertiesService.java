@@ -27,6 +27,9 @@ public class NormalUserPropertiesService {
     private final NormalUserSleepRepository sleepRepository;
     private final NormalUserSugarRepository sugarRepository;
 
+    public static final String SYSTOLIC = "Systolic";
+    public static final String DIASTOLIC = "Diastolic";
+
     @Autowired
     public NormalUserPropertiesService(NormalUserPressureRepository pressureRepository, NormalUserSleepRepository sleepRepository, NormalUserSugarRepository sugarRepository) {
         this.pressureRepository = pressureRepository;
@@ -89,9 +92,18 @@ public class NormalUserPropertiesService {
 
         NormalUserPressure pressure = byUser.get();
         Map<String, Double> map = new HashMap<>();
-        map.put("Systolic", pressure.getSystolic());
-        map.put("Diastolic", pressure.getDiastolic());
+        map.put(SYSTOLIC, pressure.getSystolic());
+        map.put(DIASTOLIC, pressure.getDiastolic());
         return map;
+    }
+
+    public NormalUserSleep getNormalSleepValue(User user) {
+        Optional<NormalUserSleep> byUser = sleepRepository.findByUser(user);
+        if(byUser.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"у пользователя не указана норма сна");
+
+        return byUser.get();
+
     }
 
 }

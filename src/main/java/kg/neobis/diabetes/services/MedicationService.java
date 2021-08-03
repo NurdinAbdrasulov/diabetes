@@ -1,6 +1,7 @@
 package kg.neobis.diabetes.services;
 
 import kg.neobis.diabetes.entity.Medication;
+import kg.neobis.diabetes.entity.User;
 import kg.neobis.diabetes.models.MedicationModel;
 import kg.neobis.diabetes.models.ModelToAddMedications;
 import kg.neobis.diabetes.repositories.MedicationRepository;
@@ -63,5 +64,9 @@ public class MedicationService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "нет медикомента с id " + medicationId);
 
         return byId.get();
+    }
+
+    public List<MedicationModel> getByUser(User user){
+        return convertToModel(repository.findByUser(user));
     }
 }

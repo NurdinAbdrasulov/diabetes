@@ -1,7 +1,6 @@
 package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.Sleep;
-import kg.neobis.diabetes.models.MessageModel;
 import kg.neobis.diabetes.models.main_page.SleepMainPageModel;
 import kg.neobis.diabetes.models.widgets.sleep.SleepJournalModel;
 import kg.neobis.diabetes.models.widgets.sleep.TrackingSleepModel;
@@ -12,11 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SleepWidgetService {
@@ -63,18 +58,24 @@ public class SleepWidgetService {
 
     public SleepMainPageModel getInfoForMainPage(){
 
-        Optional<Sleep> optionalSleep = repository.findFirstByOrderByCreatedDateDesc();
+        Optional<Sleep> optionalSleep = repository.findFirstByUserOrderByCreatedDateDesc(userService.getCurrentUser()) ;
         if(optionalSleep.isEmpty())
             return null;
 
         Sleep sleep = optionalSleep.get();
+
+        if(!WidgetService.isToday(sleep.getCreatedDate()))
+            return null;
+
         SleepMainPageModel sleepMainPageModel = new SleepMainPageModel();
         sleepMainPageModel.setEndTime(sleep.getEndTime());
         sleepMainPageModel.setStartTime(sleep.getStartTime());
         sleepMainPageModel.setDuration(getHourMinuter(sleep.getStartTime(), sleep.getEndTime()));
+        sleepMainPageModel.setTrackedDate(sleep.getCreatedDate());
 
         return sleepMainPageModel;
     }
+
 
 
     /**

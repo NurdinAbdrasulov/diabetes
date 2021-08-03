@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class PressureWidgetService {
@@ -47,8 +44,8 @@ public class PressureWidgetService {
     //TO DO
     public PressureJournalModel convertToModel(Pressure pressure){
         Map<String, Double> normalPressureValues = normalService.getNormalPressureValue(userService.getCurrentUser());
-        Double systolic = normalPressureValues.get("Systolic");
-        Double diastolic = normalPressureValues.get("Diastolic");
+        Double systolic = normalPressureValues.get(NormalUserPropertiesService.SYSTOLIC);
+        Double diastolic = normalPressureValues.get(NormalUserPropertiesService.DIASTOLIC);
         Boolean isNormal = true;
         return new PressureJournalModel(pressure.getSystolic(), pressure.getDiastolic(), pressure.getTime(), pressure.getCreatedDate(), isNormal);
     }
@@ -65,7 +62,16 @@ public class PressureWidgetService {
     }
 
     public PressureMainPageModel getForMainPage() {
+        Optional<Pressure> optionalPressure = repository.findFirstByUserOrderByCreatedDateDesc(userService.getCurrentUser());
 
-        return null;
+        if(optionalPressure.isEmpty())
+            return null;
+        Pressure pressure = optionalPressure.get();
+        PressureMainPageModel model = new PressureMainPageModel();
+        model.setDiastolic(pressure.getDiastolic());
+        model.setSystolic(pressure.getSystolic());
+        model.setTrackedTime(pressure.getCreatedDate());
+        return model;
+
     }
 }

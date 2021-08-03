@@ -2,8 +2,10 @@ package kg.neobis.diabetes.models.main_page;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class InsulinMainPageModel {
-    private Integer value;
-    private String trackedTime;
+    private Double value;
+    private Date trackedTime;
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MedicationWidgetService {
@@ -68,6 +69,10 @@ public class MedicationWidgetService {
     }
 
     public MedicationMainPageModel getForMainPage() {
-        return null;
+        Optional<UserMedication> optional = repository.findFirstByUserOrderByCreatedDateDesc(userService.getCurrentUser());
+        if(optional.isEmpty())
+            return null;
+        UserMedication medication = optional.get();
+        return new MedicationMainPageModel(medication.getMedication().getName(), medication.getValue(), medication.getCreatedDate());
     }
 }

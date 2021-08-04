@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface WaterRepository extends JpaRepository<Water, Long> {
     List<Water> findAllByUser(User user);
     Optional<Water> findFirstByOrderByCreatedDateDesc();
-    List<Water> findAllByCreatedDateAfter(Date date);
+    List<Water> findAllByUserAndCreatedDateAfter(User user, Date date);
 //    List<Water> findFirstByUserOrderByCreatedDateDesc(User user);
 
 

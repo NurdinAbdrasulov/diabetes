@@ -61,13 +61,8 @@ public class WaterWidgetService {
 
     public WaterMainPageModel getForMainPage() {
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        Date time = calendar.getTime();
 
-        List<Water> list = repository.findAllByCreatedDateAfter(time);
+        List<Water> list = repository.findAllByUserAndCreatedDateAfter(userService.getCurrentUser(), WidgetService.today());
         if(list.isEmpty())
             return null;
 

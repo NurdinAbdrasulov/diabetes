@@ -77,7 +77,15 @@ public class FoodWidgetService {
     }
 
     public FoodMainPageModel getForMainPage() {
+        List<UserFoodJournal> list = repository.findAllByUserAndCreatedDateAfter(userService.getCurrentUser(), WidgetService.today());
+        if(list.isEmpty())
+            return null;
 
-        return null;
+        Double calories = 0d;
+        for(UserFoodJournal record : list)
+            for(Food food : record.getFood())
+                calories += food.getCalories();
+
+        return new FoodMainPageModel(calories);
     }
 }

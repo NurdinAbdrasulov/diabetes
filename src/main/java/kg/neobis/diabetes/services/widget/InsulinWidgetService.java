@@ -62,7 +62,7 @@ public class InsulinWidgetService {
     public InsulinMainPageModel getForMainPage() {
         Optional<Insulin> optionalInsulin = repository.findFirstByUserOrderByCreatedDateDesc(userService.getCurrentUser());
         if(optionalInsulin.isEmpty())
-        return null;
+            return null;
 
         Insulin insulin = optionalInsulin.get();
 

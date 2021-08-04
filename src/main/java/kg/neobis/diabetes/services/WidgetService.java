@@ -96,6 +96,14 @@ public class WidgetService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"время должно быть в формате HH:mm");
     }
 
+    public static Date today(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
     public ResponseEntity<?> setNormalPressure(ModelToAddNormalUserPressure model) {
         User currentUser = userService.getCurrentUser();
 

@@ -31,11 +31,11 @@ public class MainPageService {
 
 
     public ResponseEntity<?> getMainPage() {
-        ActivityMainPageModel activityModel = activityService.getForMainPage();
+        ActivityMainPageModel activityModel = activityService.getForMainPage();//
         FoodMainPageModel foodModel = foodWidgetService.getForMainPage();
-        InsulinMainPageModel insulinModel = insulinWidgetService.getForMainPage();//
-        MedicationMainPageModel medicationModel = medicationWidgetService.getForMainPage();
-        PressureMainPageModel pressureModel = pressureWidgetService.getForMainPage();//
+        InsulinMainPageModel insulinModel = insulinWidgetService.getForMainPage();//ok
+        MedicationMainPageModel medicationModel = medicationWidgetService.getForMainPage();//
+        PressureMainPageModel pressureModel = pressureWidgetService.getForMainPage();//ok
         SleepMainPageModel sleepModel = sleepWidgetService.getInfoForMainPage();//
         SugarMainPageModel sugarModel = sugarWidgetService.getForMainPage();//
         WaterMainPageModel waterModel = waterWidgetService.getForMainPage();//

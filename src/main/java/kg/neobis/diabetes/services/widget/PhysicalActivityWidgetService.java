@@ -2,6 +2,7 @@ package kg.neobis.diabetes.services.widget;
 
 import kg.neobis.diabetes.entity.PhysicalActivity;
 import kg.neobis.diabetes.entity.UserPhysicalActivity;
+import kg.neobis.diabetes.entity.Water;
 import kg.neobis.diabetes.models.main_page.ActivityMainPageModel;
 import kg.neobis.diabetes.models.widgets.physical_activity.ActivityJournalModel;
 import kg.neobis.diabetes.models.widgets.physical_activity.TrackingActivityModel;
@@ -68,8 +69,23 @@ public class PhysicalActivityWidgetService {
 
     public ActivityMainPageModel getForMainPage() {
 
+        ActivityMainPageModel model = new ActivityMainPageModel();
 
-        return null;
+        List<UserPhysicalActivity> list = repository.findAllByUserAndCreatedDateAfter(userService.getCurrentUser(), WidgetService.today());
+        if(list.isEmpty())
+            return null;
+
+        Double sum = 0d;////////////////////////////////////////////////////dangerous
+        for(UserPhysicalActivity record: list)
+            sum+= record.getDuration();
+
+        int durationInMinutes = sum.intValue();
+
+        int hours = durationInMinutes / 60; //since both are ints, you get an int
+        int minutes = durationInMinutes % 60;
+        model.setDuration(hours + "ч " + minutes + "м");
+
+        return model;
     }
 }
 

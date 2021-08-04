@@ -34,6 +34,7 @@ public class SleepWidgetService {
         sleep.setUser(userService.getCurrentUser());
         sleep.setStartTime(model.getStartTime());
         sleep.setEndTime(model.getEndTime());
+        sleep.setCreatedDate(new Date());
 
         return ResponseEntity.ok(convertToModel(repository.save(sleep)));
     }
@@ -51,8 +52,7 @@ public class SleepWidgetService {
     }
 
     private SleepJournalModel convertToModel(Sleep sleep){
-        SleepJournalModel model = new SleepJournalModel(sleep.getStartTime(), sleep.getEndTime(), sleep.getCreatedDate());
-        return model;
+        return new SleepJournalModel(sleep.getStartTime(), sleep.getEndTime(), sleep.getCreatedDate());
     }
 
 
@@ -97,6 +97,6 @@ public class SleepWidgetService {
         if(endMinutes < startMinutes)
             hour--;
 
-        return hour + ":" + minute;
+        return hour + "ч " + minute + "м";
     }
 }

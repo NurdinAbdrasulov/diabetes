@@ -127,14 +127,17 @@ public class WidgetService {
         User user = userService.getCurrentUser();
 
         Optional<UserWidgets> byUser = repository.findByUser(user);
-        if(byUser.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "у пользователя нет виджетов");
 
-        UserWidgets userWidgets = byUser.get();
-        Set<Widgets> widgets = userWidgets.getWidgets();
-        List<WidgetModel> listOfWidgets = new ArrayList<>();
-        for(Widgets widget :  widgets)
-            listOfWidgets.add(new WidgetModel(widget.getId(), widget.getName()));
+        List<WidgetModel> listOfWidgets = null;
+        if(byUser.isPresent()) {
+            //throw new ResponseStatusException(HttpStatus.NOT_FOUND, "у пользователя нет виджетов");
+
+            UserWidgets userWidgets = byUser.get();
+            Set<Widgets> widgets = userWidgets.getWidgets();
+             listOfWidgets = new ArrayList<>();
+            for (Widgets widget : widgets)
+                listOfWidgets.add(new WidgetModel(widget.getId(), widget.getName()));
+        }
 
         ModelToAddNormalUserSleep sleep = null;
         ModelToAddNormalUserPressure pressure = null;
